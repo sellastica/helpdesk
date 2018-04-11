@@ -1,13 +1,13 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\RepositoryProxy;
-use Helpdesk\Entity\IStaffRepository;
-use Helpdesk\Entity\Staff;
+use Sellastica\Helpdesk\Entity\IStaffRepository;
+use Sellastica\Helpdesk\Entity\Staff;
 
 /**
  * @method StaffRepository getRepository()
- * @see Staff
+ * @see \Sellastica\Helpdesk\Entity\Staff
  */
 class StaffRepositoryProxy extends RepositoryProxy implements IStaffRepository
 {

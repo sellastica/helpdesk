@@ -1,11 +1,11 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\DibiMapper;
-use Helpdesk\Entity\Staff;
+use Sellastica\Helpdesk\Entity\Staff;
 
 /**
- * @see Staff
+ * @see \Sellastica\Helpdesk\Entity\Staff
  */
 class StaffDibiMapper extends DibiMapper
 {

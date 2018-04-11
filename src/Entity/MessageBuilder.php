@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 use Sellastica\Entity\IBuilder;
 use Sellastica\Entity\TBuilder;
@@ -21,7 +21,7 @@ class MessageBuilder implements IBuilder
 	private $senderEmail;
 	/** @var int|null */
 	private $staffId;
-	/** @var \Helpdesk\Model\TicketStatus */
+	/** @var \Sellastica\Helpdesk\Model\TicketStatus */
 	private $status;
 
 	/**
@@ -94,18 +94,18 @@ class MessageBuilder implements IBuilder
 	}
 
 	/**
-	 * @return \Helpdesk\Model\TicketStatus
+	 * @return \Sellastica\Helpdesk\Model\TicketStatus
 	 */
-	public function getStatus(): \Helpdesk\Model\TicketStatus
+	public function getStatus(): \Sellastica\Helpdesk\Model\TicketStatus
 	{
 		return $this->status;
 	}
 
 	/**
-	 * @param \Helpdesk\Model\TicketStatus $status
+	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
 	 * @return $this
 	 */
-	public function status(\Helpdesk\Model\TicketStatus $status)
+	public function status(\Sellastica\Helpdesk\Model\TicketStatus $status)
 	{
 		$this->status = $status;
 		return $this;

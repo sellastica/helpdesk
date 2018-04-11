@@ -1,11 +1,11 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 /**
  * @generate-builder
  * @see MessageBuilder
  *
- * @property MessageRelations $relationService
+ * @property \Sellastica\Helpdesk\Entity\MessageRelations $relationService
  */
 class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellastica\Entity\Entity\IAggregateRoot
 {
@@ -13,7 +13,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 
 	/** @var int @required */
 	private $ticketId;
-	/** @var Ticket */
+	/** @var \Sellastica\Helpdesk\Entity\Ticket */
 	private $ticket;
 	/** @var string @required */
 	private $message;
@@ -23,21 +23,21 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	private $senderEmail;
 	/** @var int|null @optional */
 	private $staffId;
-	/** @var Staff */
+	/** @var \Sellastica\Helpdesk\Entity\Staff */
 	private $staff;
-	/** @var \Helpdesk\Model\TicketStatus @optional */
+	/** @var \Sellastica\Helpdesk\Model\TicketStatus @optional */
 	private $status;
-	/** @var \Helpdesk\Entity\MessageAttachmentCollection */
+	/** @var \Sellastica\Helpdesk\Entity\MessageAttachmentCollection */
 	private $attachments;
 
 
 	/**
-	 * @param MessageBuilder $builder
+	 * @param \Sellastica\Helpdesk\Entity\MessageBuilder $builder
 	 */
-	public function __construct(MessageBuilder $builder)
+	public function __construct(\Sellastica\Helpdesk\Entity\MessageBuilder $builder)
 	{
 		$this->hydrate($builder);
-		$this->status = $this->status ?? \Helpdesk\Model\TicketStatus::open();
+		$this->status = $this->status ?? \Sellastica\Helpdesk\Model\TicketStatus::open();
 	}
 
 	/**
@@ -49,9 +49,9 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	}
 
 	/**
-	 * @return Ticket
+	 * @return \Sellastica\Helpdesk\Entity\Ticket
 	 */
-	public function getTicket(): Ticket
+	public function getTicket(): \Sellastica\Helpdesk\Entity\Ticket
 	{
 		if (!isset($this->ticket)) {
 			$this->ticket = $this->relationService->getTicket();
@@ -125,9 +125,9 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	}
 
 	/**
-	 * @return Staff|null
+	 * @return \Sellastica\Helpdesk\Entity\Staff|null
 	 */
-	public function getStaff(): ?Staff
+	public function getStaff(): ?\Sellastica\Helpdesk\Entity\Staff
 	{
 		if (!isset($this->staff)) {
 			$this->staff = $this->relationService->getStaff();
@@ -137,25 +137,25 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	}
 
 	/**
-	 * @return \Helpdesk\Model\TicketStatus
+	 * @return \Sellastica\Helpdesk\Model\TicketStatus
 	 */
-	public function getStatus(): \Helpdesk\Model\TicketStatus
+	public function getStatus(): \Sellastica\Helpdesk\Model\TicketStatus
 	{
 		return $this->status;
 	}
 
 	/**
-	 * @param \Helpdesk\Model\TicketStatus $status
+	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
 	 */
-	public function setStatus(\Helpdesk\Model\TicketStatus $status): void
+	public function setStatus(\Sellastica\Helpdesk\Model\TicketStatus $status): void
 	{
 		$this->status = $status;
 	}
 
 	/**
-	 * @return \Helpdesk\Entity\MessageAttachmentCollection
+	 * @return \Sellastica\Helpdesk\Entity\MessageAttachmentCollection
 	 */
-	public function getAttachments(): \Helpdesk\Entity\MessageAttachmentCollection
+	public function getAttachments(): \Sellastica\Helpdesk\Entity\MessageAttachmentCollection
 	{
 		if (!isset($this->attachments)) {
 			$this->attachments = $this->relationService->getAttachments();
@@ -167,12 +167,12 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	/**
 	 * @param string $filename
 	 * @param string $content
-	 * @return \Helpdesk\Entity\MessageAttachment
+	 * @return \Sellastica\Helpdesk\Entity\MessageAttachment
 	 */
-	public function addAttachment(string $filename, string $content): MessageAttachment
+	public function addAttachment(string $filename, string $content): \Sellastica\Helpdesk\Entity\MessageAttachment
 	{
 		$attachments = $this->getAttachments();
-		$attachments[] = $attachment = MessageAttachmentBuilder::create($this->id, $filename, $content)->build();
+		$attachments[] = $attachment = \Sellastica\Helpdesk\Entity\MessageAttachmentBuilder::create($this->id, $filename, $content)->build();
 		$this->eventPublisher->publish(new \Sellastica\Entity\Event\AggregateMemberAdded($this, $attachment));
 
 		return $attachment;

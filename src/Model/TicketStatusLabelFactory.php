@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Model;
+namespace Sellastica\Helpdesk\Model;
 
 class TicketStatusLabelFactory
 {
@@ -23,7 +23,7 @@ class TicketStatusLabelFactory
 	}
 
 	/**
-	 * @param \Helpdesk\Model\TicketStatus $status
+	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
 	 * @return \Nette\Utils\Html|null
 	 */
 	public function create(TicketStatus $status): ?\Nette\Utils\Html

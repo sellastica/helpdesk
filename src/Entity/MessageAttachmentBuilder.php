@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 use Sellastica\Entity\IBuilder;
 use Sellastica\Entity\TBuilder;

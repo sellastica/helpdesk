@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 class MessageAttachmentRelations implements \Sellastica\Entity\Relation\IEntityRelations
 {
@@ -23,7 +23,7 @@ class MessageAttachmentRelations implements \Sellastica\Entity\Relation\IEntityR
 	}
 
 	/**
-	 * @return \Helpdesk\Entity\Message
+	 * @return \Sellastica\Helpdesk\Entity\Message
 	 */
 	public function getMessage(): Message
 	{

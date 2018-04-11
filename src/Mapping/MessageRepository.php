@@ -1,13 +1,13 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\Repository;
-use Helpdesk\Entity\Message;
-use Helpdesk\Entity\IMessageRepository;
+use Sellastica\Helpdesk\Entity\IMessageRepository;
+use Sellastica\Helpdesk\Entity\Message;
 
 /**
- * @property MessageDao $dao
- * @see Message
+ * @property \Sellastica\Helpdesk\Mapping\MessageDao $dao
+ * @see \Sellastica\Helpdesk\Entity\Message
  */
 class MessageRepository extends Repository implements IMessageRepository
 {

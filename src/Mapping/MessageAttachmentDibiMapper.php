@@ -1,8 +1,8 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\DibiMapper;
-use Helpdesk\Entity\MessageAttachment;
+use Sellastica\Helpdesk\Entity\MessageAttachment;
 
 /**
  * @see MessageAttachment

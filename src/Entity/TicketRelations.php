@@ -1,20 +1,20 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 class TicketRelations implements \Sellastica\Entity\Relation\IEntityRelations
 {
-	/** @var Ticket */
+	/** @var \Sellastica\Helpdesk\Entity\Ticket */
 	private $ticket;
 	/** @var \Sellastica\Entity\EntityManager */
 	private $em;
 
 
 	/**
-	 * @param Ticket $ticket
+	 * @param \Sellastica\Helpdesk\Entity\Ticket $ticket
 	 * @param \Sellastica\Entity\EntityManager $em
 	 */
 	public function __construct(
-		Ticket $ticket,
+		\Sellastica\Helpdesk\Entity\Ticket $ticket,
 		\Sellastica\Entity\EntityManager $em
 	)
 	{
@@ -39,7 +39,7 @@ class TicketRelations implements \Sellastica\Entity\Relation\IEntityRelations
 	}
 
 	/**
-	 * @return \Helpdesk\Entity\MessageCollection
+	 * @return \Sellastica\Helpdesk\Entity\MessageCollection
 	 */
 	public function getMessages(): MessageCollection
 	{

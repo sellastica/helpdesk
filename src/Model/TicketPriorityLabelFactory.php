@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Model;
+namespace Sellastica\Helpdesk\Model;
 
 class TicketPriorityLabelFactory
 {
@@ -23,7 +23,7 @@ class TicketPriorityLabelFactory
 	}
 
 	/**
-	 * @param \Helpdesk\Model\TicketPriority $priority
+	 * @param \Sellastica\Helpdesk\Model\TicketPriority $priority
 	 * @return \Nette\Utils\Html|null
 	 */
 	public function create(TicketPriority $priority): ?\Nette\Utils\Html

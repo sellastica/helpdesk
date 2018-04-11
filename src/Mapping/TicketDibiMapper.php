@@ -1,11 +1,11 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\DibiMapper;
-use Helpdesk\Entity\Ticket;
+use Sellastica\Helpdesk\Entity\Ticket;
 
 /**
- * @see Ticket
+ * @see \Sellastica\Helpdesk\Entity\Ticket
  */
 class TicketDibiMapper extends DibiMapper
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 use Sellastica\Entity\IBuilder;
 use Sellastica\Entity\TBuilder;
@@ -17,9 +17,9 @@ class TicketBuilder implements IBuilder
 	private $subject;
 	/** @var int|null */
 	private $staffId;
-	/** @var \Helpdesk\Model\TicketPriority */
+	/** @var \Sellastica\Helpdesk\Model\TicketPriority */
 	private $priority;
-	/** @var \Helpdesk\Model\TicketStatus */
+	/** @var \Sellastica\Helpdesk\Model\TicketStatus */
 	private $status;
 	/** @var string|null */
 	private $url;
@@ -72,36 +72,36 @@ class TicketBuilder implements IBuilder
 	}
 
 	/**
-	 * @return \Helpdesk\Model\TicketPriority
+	 * @return \Sellastica\Helpdesk\Model\TicketPriority
 	 */
-	public function getPriority(): \Helpdesk\Model\TicketPriority
+	public function getPriority(): \Sellastica\Helpdesk\Model\TicketPriority
 	{
 		return $this->priority;
 	}
 
 	/**
-	 * @param \Helpdesk\Model\TicketPriority $priority
+	 * @param \Sellastica\Helpdesk\Model\TicketPriority $priority
 	 * @return $this
 	 */
-	public function priority(\Helpdesk\Model\TicketPriority $priority)
+	public function priority(\Sellastica\Helpdesk\Model\TicketPriority $priority)
 	{
 		$this->priority = $priority;
 		return $this;
 	}
 
 	/**
-	 * @return \Helpdesk\Model\TicketStatus
+	 * @return \Sellastica\Helpdesk\Model\TicketStatus
 	 */
-	public function getStatus(): \Helpdesk\Model\TicketStatus
+	public function getStatus(): \Sellastica\Helpdesk\Model\TicketStatus
 	{
 		return $this->status;
 	}
 
 	/**
-	 * @param \Helpdesk\Model\TicketStatus $status
+	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
 	 * @return $this
 	 */
-	public function status(\Helpdesk\Model\TicketStatus $status)
+	public function status(\Sellastica\Helpdesk\Model\TicketStatus $status)
 	{
 		$this->status = $status;
 		return $this;
@@ -130,15 +130,15 @@ class TicketBuilder implements IBuilder
 	 */
 	public function generateId(): bool
 	{
-		return !Ticket::isIdGeneratedByStorage();
+		return !\Sellastica\Helpdesk\Entity\Ticket::isIdGeneratedByStorage();
 	}
 
 	/**
-	 * @return Ticket
+	 * @return \Sellastica\Helpdesk\Entity\Ticket
 	 */
-	public function build(): Ticket
+	public function build(): \Sellastica\Helpdesk\Entity\Ticket
 	{
-		return new Ticket($this);
+		return new \Sellastica\Helpdesk\Entity\Ticket($this);
 	}
 
 	/**

@@ -1,9 +1,9 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
-use Sellastica\Entity\IBuilder;
-use Sellastica\Entity\Entity\IEntity;
 use Sellastica\Entity\Entity\EntityFactory;
+use Sellastica\Entity\Entity\IEntity;
+use Sellastica\Entity\IBuilder;
 
 /**
  * @method Message build(IBuilder $builder, bool $initialize = true, int $assignedId = null)
@@ -16,7 +16,7 @@ class MessageFactory extends EntityFactory
 	 */
 	public function doInitialize(IEntity $entity)
 	{
-		$entity->setRelationService(new MessageRelations($entity, $this->em));
+		$entity->setRelationService(new \Sellastica\Helpdesk\Entity\MessageRelations($entity, $this->em));
 	}
 
 	/**

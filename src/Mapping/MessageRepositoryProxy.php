@@ -1,13 +1,13 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\RepositoryProxy;
-use Helpdesk\Entity\IMessageRepository;
-use Helpdesk\Entity\Message;
+use Sellastica\Helpdesk\Entity\IMessageRepository;
+use Sellastica\Helpdesk\Entity\Message;
 
 /**
  * @method MessageRepository getRepository()
- * @see Message
+ * @see \Sellastica\Helpdesk\Entity\Message
  */
 class MessageRepositoryProxy extends RepositoryProxy implements IMessageRepository
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 /**
  * @generate-builder
@@ -18,9 +18,9 @@ class Staff extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellast
 
 
 	/**
-	 * @param StaffBuilder $builder
+	 * @param \Sellastica\Helpdesk\Entity\StaffBuilder $builder
 	 */
-	public function __construct(StaffBuilder $builder)
+	public function __construct(\Sellastica\Helpdesk\Entity\StaffBuilder $builder)
 	{
 		$this->hydrate($builder);
 	}

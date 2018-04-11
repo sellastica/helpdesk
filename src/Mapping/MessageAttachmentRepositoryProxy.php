@@ -1,13 +1,13 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\RepositoryProxy;
-use Helpdesk\Entity\IMessageAttachmentRepository;
-use Helpdesk\Entity\MessageAttachment;
+use Sellastica\Helpdesk\Entity\IMessageAttachmentRepository;
+use Sellastica\Helpdesk\Entity\MessageAttachment;
 
 /**
  * @method MessageAttachmentRepository getRepository()
- * @see MessageAttachment
+ * @see \Sellastica\Helpdesk\Entity\MessageAttachment
  */
 class MessageAttachmentRepositoryProxy extends RepositoryProxy implements IMessageAttachmentRepository
 {

@@ -1,16 +1,16 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
+use Sellastica\Entity\Entity\EntityCollection;
 use Sellastica\Entity\IBuilder;
 use Sellastica\Entity\Mapping\Dao;
-use Helpdesk\Entity\Ticket;
-use Helpdesk\Entity\TicketBuilder;
-use Sellastica\Entity\Entity\EntityCollection;
-use Helpdesk\Entity\TicketCollection;
+use Sellastica\Helpdesk\Entity\Ticket;
+use Sellastica\Helpdesk\Entity\TicketBuilder;
+use Sellastica\Helpdesk\Entity\TicketCollection;
 
 /**
- * @see Ticket
- * @property TicketDibiMapper $mapper
+ * @see \Sellastica\Helpdesk\Entity\Ticket
+ * @property \Sellastica\Helpdesk\Mapping\TicketDibiMapper $mapper
  */
 class TicketDao extends Dao
 {
@@ -26,8 +26,8 @@ class TicketDao extends Dao
 		$second = null
 	): IBuilder
 	{
-		$data->priority = \Helpdesk\Model\TicketPriority::from($data->priority);
-		$data->status = \Helpdesk\Model\TicketStatus::from($data->status);
+		$data->priority = \Sellastica\Helpdesk\Model\TicketPriority::from($data->priority);
+		$data->status = \Sellastica\Helpdesk\Model\TicketStatus::from($data->status);
 		return TicketBuilder::create($data->projectId, $data->subject)
 			->hydrate($data);
 	}

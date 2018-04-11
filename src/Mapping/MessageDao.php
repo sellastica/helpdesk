@@ -1,12 +1,12 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
+use Sellastica\Entity\Entity\EntityCollection;
 use Sellastica\Entity\IBuilder;
 use Sellastica\Entity\Mapping\Dao;
-use Helpdesk\Entity\Message;
-use Helpdesk\Entity\MessageBuilder;
-use Sellastica\Entity\Entity\EntityCollection;
-use Helpdesk\Entity\MessageCollection;
+use Sellastica\Helpdesk\Entity\Message;
+use Sellastica\Helpdesk\Entity\MessageBuilder;
+use Sellastica\Helpdesk\Entity\MessageCollection;
 
 /**
  * @see Message
@@ -24,13 +24,13 @@ class MessageDao extends Dao
 	): IBuilder
 	{
 		$data->senderEmail = new \Sellastica\Identity\Model\Email($data->senderEmail);
-		$data->status = \Helpdesk\Model\TicketStatus::from($data->status);
+		$data->status = \Sellastica\Helpdesk\Model\TicketStatus::from($data->status);
 		return MessageBuilder::create($data->ticketId, $data->message, $data->senderName, $data->senderEmail)
 			->hydrate($data);
 	}
 
 	/**
-	 * @return EntityCollection|MessageCollection
+	 * @return EntityCollection|\Sellastica\Helpdesk\Entity\MessageCollection
 	 */
 	public function getEmptyCollection(): EntityCollection
 	{

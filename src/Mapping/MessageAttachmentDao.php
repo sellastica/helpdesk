@@ -1,16 +1,16 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
+use Sellastica\Entity\Entity\EntityCollection;
 use Sellastica\Entity\IBuilder;
 use Sellastica\Entity\Mapping\Dao;
-use Helpdesk\Entity\MessageAttachment;
-use Helpdesk\Entity\MessageAttachmentBuilder;
-use Sellastica\Entity\Entity\EntityCollection;
-use Helpdesk\Entity\MessageAttachmentCollection;
+use Sellastica\Helpdesk\Entity\MessageAttachment;
+use Sellastica\Helpdesk\Entity\MessageAttachmentBuilder;
+use Sellastica\Helpdesk\Entity\MessageAttachmentCollection;
 
 /**
- * @see MessageAttachment
- * @property MessageAttachmentDibiMapper $mapper
+ * @see \Sellastica\Helpdesk\Entity\MessageAttachment
+ * @property \Sellastica\Helpdesk\Mapping\MessageAttachmentDibiMapper $mapper
  */
 class MessageAttachmentDao extends Dao
 {
@@ -28,7 +28,7 @@ class MessageAttachmentDao extends Dao
 	}
 
 	/**
-	 * @return EntityCollection|MessageAttachmentCollection
+	 * @return EntityCollection|\Sellastica\Helpdesk\Entity\MessageAttachmentCollection
 	 */
 	public function getEmptyCollection(): EntityCollection
 	{

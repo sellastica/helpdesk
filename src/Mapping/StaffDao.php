@@ -1,16 +1,16 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
+use Sellastica\Entity\Entity\EntityCollection;
 use Sellastica\Entity\IBuilder;
 use Sellastica\Entity\Mapping\Dao;
-use Helpdesk\Entity\Staff;
-use Helpdesk\Entity\StaffBuilder;
-use Sellastica\Entity\Entity\EntityCollection;
-use Helpdesk\Entity\StaffCollection;
+use Sellastica\Helpdesk\Entity\Staff;
+use Sellastica\Helpdesk\Entity\StaffBuilder;
+use Sellastica\Helpdesk\Entity\StaffCollection;
 
 /**
  * @see Staff
- * @property StaffDibiMapper $mapper
+ * @property \Sellastica\Helpdesk\Mapping\StaffDibiMapper $mapper
  */
 class StaffDao extends Dao
 {

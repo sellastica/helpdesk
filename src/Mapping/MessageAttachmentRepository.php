@@ -1,13 +1,13 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\Repository;
-use Helpdesk\Entity\MessageAttachment;
-use Helpdesk\Entity\IMessageAttachmentRepository;
+use Sellastica\Helpdesk\Entity\IMessageAttachmentRepository;
+use Sellastica\Helpdesk\Entity\MessageAttachment;
 
 /**
- * @property MessageAttachmentDao $dao
- * @see MessageAttachment
+ * @property \Sellastica\Helpdesk\Mapping\MessageAttachmentDao $dao
+ * @see \Sellastica\Helpdesk\Entity\MessageAttachment
  */
 class MessageAttachmentRepository extends Repository implements IMessageAttachmentRepository
 {

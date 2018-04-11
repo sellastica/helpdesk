@@ -1,9 +1,9 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\Repository;
-use Helpdesk\Entity\Ticket;
-use Helpdesk\Entity\ITicketRepository;
+use Sellastica\Helpdesk\Entity\ITicketRepository;
+use Sellastica\Helpdesk\Entity\Ticket;
 
 /**
  * @property TicketDao $dao

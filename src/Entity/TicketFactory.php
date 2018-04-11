@@ -1,22 +1,22 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
-use Sellastica\Entity\IBuilder;
-use Sellastica\Entity\Entity\IEntity;
 use Sellastica\Entity\Entity\EntityFactory;
+use Sellastica\Entity\Entity\IEntity;
+use Sellastica\Entity\IBuilder;
 
 /**
- * @method Ticket build(IBuilder $builder, bool $initialize = true, int $assignedId = null)
+ * @method \Sellastica\Helpdesk\Entity\Ticket build(IBuilder $builder, bool $initialize = true, int $assignedId = null)
  * @see Ticket
  */
 class TicketFactory extends EntityFactory
 {
 	/**
-	 * @param IEntity|Ticket $entity
+	 * @param IEntity|\Sellastica\Helpdesk\Entity\Ticket $entity
 	 */
 	public function doInitialize(IEntity $entity)
 	{
-		$entity->setRelationService(new TicketRelations($entity, $this->em));
+		$entity->setRelationService(new \Sellastica\Helpdesk\Entity\TicketRelations($entity, $this->em));
 	}
 
 	/**
@@ -24,6 +24,6 @@ class TicketFactory extends EntityFactory
 	 */
 	public function getEntityClass(): string
 	{
-		return Ticket::class;
+		return \Sellastica\Helpdesk\Entity\Ticket::class;
 	}
 }

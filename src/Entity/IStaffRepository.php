@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 use Sellastica\Entity\Configuration;
 use Sellastica\Entity\Mapping\IRepository;

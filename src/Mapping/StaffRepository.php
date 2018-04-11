@@ -1,9 +1,9 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\Repository;
-use Helpdesk\Entity\Staff;
-use Helpdesk\Entity\IStaffRepository;
+use Sellastica\Helpdesk\Entity\IStaffRepository;
+use Sellastica\Helpdesk\Entity\Staff;
 
 /**
  * @property StaffDao $dao

@@ -1,9 +1,9 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
-use Sellastica\Entity\IBuilder;
-use Sellastica\Entity\Entity\IEntity;
 use Sellastica\Entity\Entity\EntityFactory;
+use Sellastica\Entity\Entity\IEntity;
+use Sellastica\Entity\IBuilder;
 
 /**
  * @method Staff build(IBuilder $builder, bool $initialize = true, int $assignedId = null)

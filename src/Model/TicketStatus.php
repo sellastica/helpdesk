@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Model;
+namespace Sellastica\Helpdesk\Model;
 
 class TicketStatus
 {

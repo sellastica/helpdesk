@@ -1,9 +1,9 @@
 <?php
-namespace Helpdesk\Mapping;
+namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\RepositoryProxy;
-use Helpdesk\Entity\ITicketRepository;
-use Helpdesk\Entity\Ticket;
+use Sellastica\Helpdesk\Entity\ITicketRepository;
+use Sellastica\Helpdesk\Entity\Ticket;
 
 /**
  * @method TicketRepository getRepository()

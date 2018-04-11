@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Service;
+namespace Sellastica\Helpdesk\Service;
 
 class TicketService
 {
@@ -28,15 +28,15 @@ class TicketService
 	}
 
 	/**
-	 * @param \Helpdesk\Service\CreateTicketRequest $request
-	 * @return \Helpdesk\Entity\Ticket
+	 * @param \Sellastica\Helpdesk\Service\CreateTicketRequest $request
+	 * @return \Sellastica\Helpdesk\Entity\Ticket
 	 */
-	public function createTicket(CreateTicketRequest $request): \Helpdesk\Entity\Ticket
+	public function createTicket(CreateTicketRequest $request): \Sellastica\Helpdesk\Entity\Ticket
 	{
 		$project = $request->getProject() ?? $this->projectAccessor->get();
 
 		//ticket
-		$ticket = \Helpdesk\Entity\TicketBuilder::create($project->getId(), $request->getSubject())
+		$ticket = \Sellastica\Helpdesk\Entity\TicketBuilder::create($project->getId(), $request->getSubject())
 			->url($request->getUrl())
 			->status($request->getStatus())
 			->build();
@@ -60,12 +60,12 @@ class TicketService
 	}
 
 	/**
-	 * @param \Helpdesk\Service\CreateMessageRequest $request
-	 * @return \Helpdesk\Entity\Message
+	 * @param \Sellastica\Helpdesk\Service\CreateMessageRequest $request
+	 * @return \Sellastica\Helpdesk\Entity\Message
 	 */
-	public function createMessage(CreateMessageRequest $request): \Helpdesk\Entity\Message
+	public function createMessage(CreateMessageRequest $request): \Sellastica\Helpdesk\Entity\Message
 	{
-		$message = \Helpdesk\Entity\MessageBuilder::create(
+		$message = \Sellastica\Helpdesk\Entity\MessageBuilder::create(
 			$request->getTicketId(), $request->getMessage(), $request->getSenderName(), $request->getSenderEmail()
 		)->build();
 		$this->em->persist($message);

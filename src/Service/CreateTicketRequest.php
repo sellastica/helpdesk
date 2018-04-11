@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Service;
+namespace Sellastica\Helpdesk\Service;
 
 class CreateTicketRequest
 {
@@ -15,7 +15,7 @@ class CreateTicketRequest
 	private $url;
 	/** @var \Sellastica\Project\Entity\Project|null */
 	private $project;
-	/** @var \Helpdesk\Model\TicketStatus */
+	/** @var \Sellastica\Helpdesk\Model\TicketStatus */
 	private $status;
 	/** @var \Nette\Http\FileUpload[] */
 	private $attachments = [];
@@ -26,14 +26,14 @@ class CreateTicketRequest
 	 * @param string $message
 	 * @param string $senderName
 	 * @param \Sellastica\Identity\Model\Email $senderEmail
-	 * @param \Helpdesk\Model\TicketStatus $status
+	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
 	 */
 	public function __construct(
 		string $subject,
 		string $message,
 		string $senderName,
 		\Sellastica\Identity\Model\Email $senderEmail,
-		\Helpdesk\Model\TicketStatus $status
+		\Sellastica\Helpdesk\Model\TicketStatus $status
 	)
 	{
 		$this->subject = $subject;
@@ -76,9 +76,9 @@ class CreateTicketRequest
 	}
 
 	/**
-	 * @return \Helpdesk\Model\TicketStatus
+	 * @return \Sellastica\Helpdesk\Model\TicketStatus
 	 */
-	public function getStatus(): \Helpdesk\Model\TicketStatus
+	public function getStatus(): \Sellastica\Helpdesk\Model\TicketStatus
 	{
 		return $this->status;
 	}

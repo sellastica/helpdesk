@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 class MessageRelations implements \Sellastica\Entity\Relation\IEntityRelations
 {
@@ -31,17 +31,17 @@ class MessageRelations implements \Sellastica\Entity\Relation\IEntityRelations
 	}
 
 	/**
-	 * @return Staff|null
+	 * @return \Sellastica\Helpdesk\Entity\Staff|null
 	 */
-	public function getStaff(): ?Staff
+	public function getStaff(): ?\Sellastica\Helpdesk\Entity\Staff
 	{
-		return $this->em->getRepository(Staff::class)->find($this->message->getStaffId());
+		return $this->em->getRepository(\Sellastica\Helpdesk\Entity\Staff::class)->find($this->message->getStaffId());
 	}
 
 	/**
-	 * @return \Helpdesk\Entity\MessageAttachmentCollection|\Sellastica\Entity\Entity\EntityCollection
+	 * @return \Sellastica\Helpdesk\Entity\MessageAttachmentCollection|\Sellastica\Entity\Entity\EntityCollection
 	 */
-	public function getAttachments(): MessageAttachmentCollection
+	public function getAttachments(): \Sellastica\Helpdesk\Entity\MessageAttachmentCollection
 	{
 		return $this->em->getRepository(MessageAttachment::class)->findBy([
 			'messageId' => $this->message->getId(),

@@ -1,5 +1,5 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 /**
  * @generate-builder
@@ -21,9 +21,9 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	private $staffId;
 	/** @var Staff */
 	private $staff;
-	/** @var \Helpdesk\Model\TicketPriority @optional */
+	/** @var \Sellastica\Helpdesk\Model\TicketPriority @optional */
 	private $priority;
-	/** @var \Helpdesk\Model\TicketStatus @optional */
+	/** @var \Sellastica\Helpdesk\Model\TicketStatus @optional */
 	private $status;
 	/** @var string|null @optional */
 	private $url;
@@ -35,8 +35,8 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	public function __construct(TicketBuilder $builder)
 	{
 		$this->hydrate($builder);
-		$this->priority = $this->priority ?? \Helpdesk\Model\TicketPriority::none();
-		$this->status = $this->status ?? \Helpdesk\Model\TicketStatus::open();
+		$this->priority = $this->priority ?? \Sellastica\Helpdesk\Model\TicketPriority::none();
+		$this->status = $this->status ?? \Sellastica\Helpdesk\Model\TicketStatus::open();
 	}
 
 	/**
@@ -112,33 +112,33 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	}
 
 	/**
-	 * @return \Helpdesk\Model\TicketPriority
+	 * @return \Sellastica\Helpdesk\Model\TicketPriority
 	 */
-	public function getPriority(): \Helpdesk\Model\TicketPriority
+	public function getPriority(): \Sellastica\Helpdesk\Model\TicketPriority
 	{
 		return $this->priority;
 	}
 
 	/**
-	 * @param \Helpdesk\Model\TicketPriority $priority
+	 * @param \Sellastica\Helpdesk\Model\TicketPriority $priority
 	 */
-	public function setPriority(\Helpdesk\Model\TicketPriority $priority): void
+	public function setPriority(\Sellastica\Helpdesk\Model\TicketPriority $priority): void
 	{
 		$this->priority = $priority;
 	}
 
 	/**
-	 * @return \Helpdesk\Model\TicketStatus
+	 * @return \Sellastica\Helpdesk\Model\TicketStatus
 	 */
-	public function getStatus(): \Helpdesk\Model\TicketStatus
+	public function getStatus(): \Sellastica\Helpdesk\Model\TicketStatus
 	{
 		return $this->status;
 	}
 
 	/**
-	 * @param \Helpdesk\Model\TicketStatus $status
+	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
 	 */
-	public function setStatus(\Helpdesk\Model\TicketStatus $status): void
+	public function setStatus(\Sellastica\Helpdesk\Model\TicketStatus $status): void
 	{
 		$this->status = $status;
 	}
@@ -160,7 +160,7 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	}
 
 	/**
-	 * @return \Helpdesk\Entity\MessageCollection
+	 * @return \Sellastica\Helpdesk\Entity\MessageCollection
 	 */
 	public function getMessages(): MessageCollection
 	{

@@ -1,11 +1,11 @@
 <?php
-namespace Helpdesk\Entity;
+namespace Sellastica\Helpdesk\Entity;
 
 /**
  * @generate-builder
  * @see MessageAttachmentBuilder
  *
- * @property MessageAttachmentRelations $relationService
+ * @property \Sellastica\Helpdesk\Entity\MessageAttachmentRelations $relationService
  */
 class MessageAttachment extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellastica\Entity\Entity\IAggregateMember
 {
@@ -20,9 +20,9 @@ class MessageAttachment extends \Sellastica\Entity\Entity\AbstractEntity impleme
 
 
 	/**
-	 * @param MessageAttachmentBuilder $builder
+	 * @param \Sellastica\Helpdesk\Entity\MessageAttachmentBuilder $builder
 	 */
-	public function __construct(MessageAttachmentBuilder $builder)
+	public function __construct(\Sellastica\Helpdesk\Entity\MessageAttachmentBuilder $builder)
 	{
 		$this->hydrate($builder);
 	}
@@ -52,7 +52,7 @@ class MessageAttachment extends \Sellastica\Entity\Entity\AbstractEntity impleme
 	}
 
 	/**
-	 * @return \Helpdesk\Entity\Message
+	 * @return \Sellastica\Helpdesk\Entity\Message
 	 */
 	public function getAggregateRoot(): Message
 	{
@@ -68,7 +68,7 @@ class MessageAttachment extends \Sellastica\Entity\Entity\AbstractEntity impleme
 	}
 
 	/**
-	 * @return \Helpdesk\Entity\Message
+	 * @return \Sellastica\Helpdesk\Entity\Message
 	 */
 	public function getMessage(): Message
 	{
