@@ -41,6 +41,14 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	}
 
 	/**
+	 * @return bool
+	 */
+	public static function isIdGeneratedByStorage(): bool
+	{
+		return true;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getTicketId(): int

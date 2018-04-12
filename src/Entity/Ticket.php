@@ -25,6 +25,8 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	private $priority;
 	/** @var \Sellastica\Helpdesk\Model\TicketStatus @optional */
 	private $status;
+	/** @var \Sellastica\Helpdesk\Model\TicketType @optional */
+	private $type;
 	/** @var string|null @optional */
 	private $url;
 
@@ -37,6 +39,15 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 		$this->hydrate($builder);
 		$this->priority = $this->priority ?? \Sellastica\Helpdesk\Model\TicketPriority::none();
 		$this->status = $this->status ?? \Sellastica\Helpdesk\Model\TicketStatus::open();
+		$this->type = $this->type ?? \Sellastica\Helpdesk\Model\TicketType::common();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function isIdGeneratedByStorage(): bool
+	{
+		return true;
 	}
 
 	/**
@@ -179,6 +190,7 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 			'staffId' => $this->staffId,
 			'priority' => $this->priority->getCode(),
 			'status' => $this->status->getCode(),
+			'type' => $this->type->getCode(),
 			'url' => $this->url,
 		];
 	}

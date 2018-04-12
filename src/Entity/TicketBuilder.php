@@ -21,6 +21,8 @@ class TicketBuilder implements IBuilder
 	private $priority;
 	/** @var \Sellastica\Helpdesk\Model\TicketStatus */
 	private $status;
+	/** @var \Sellastica\Helpdesk\Model\TicketType */
+	private $type;
 	/** @var string|null */
 	private $url;
 
@@ -108,6 +110,24 @@ class TicketBuilder implements IBuilder
 	}
 
 	/**
+	 * @return \Sellastica\Helpdesk\Model\TicketType
+	 */
+	public function getType(): \Sellastica\Helpdesk\Model\TicketType
+	{
+		return $this->type;
+	}
+
+	/**
+	 * @param \Sellastica\Helpdesk\Model\TicketType $type
+	 * @return $this
+	 */
+	public function type(\Sellastica\Helpdesk\Model\TicketType $type)
+	{
+		$this->type = $type;
+		return $this;
+	}
+
+	/**
 	 * @return string|null
 	 */
 	public function getUrl()
@@ -130,15 +150,15 @@ class TicketBuilder implements IBuilder
 	 */
 	public function generateId(): bool
 	{
-		return !\Sellastica\Helpdesk\Entity\Ticket::isIdGeneratedByStorage();
+		return !Ticket::isIdGeneratedByStorage();
 	}
 
 	/**
-	 * @return \Sellastica\Helpdesk\Entity\Ticket
+	 * @return Ticket
 	 */
-	public function build(): \Sellastica\Helpdesk\Entity\Ticket
+	public function build(): Ticket
 	{
-		return new \Sellastica\Helpdesk\Entity\Ticket($this);
+		return new Ticket($this);
 	}
 
 	/**

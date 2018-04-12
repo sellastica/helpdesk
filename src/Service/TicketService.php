@@ -39,8 +39,10 @@ class TicketService
 		$ticket = \Sellastica\Helpdesk\Entity\TicketBuilder::create($project->getId(), $request->getSubject())
 			->url($request->getUrl())
 			->status($request->getStatus())
+			->type($request->getType())
 			->build();
 		$this->em->persist($ticket);
+		$this->em->flush(); //retrieve ticket ID
 
 		//message
 		$messageRequest = new CreateMessageRequest(
@@ -70,8 +72,11 @@ class TicketService
 		)->build();
 		$this->em->persist($message);
 
-		foreach ($request->getAttachments() as $attachment) {
-			$message->addAttachment($attachment->getName(), file_get_contents($attachment->getTemporaryFile()));
+		if ($request->getAttachments()) {
+			$this->em->flush(); //retrieve message ID
+			foreach ($request->getAttachments() as $attachment) {
+				$message->addAttachment($attachment->getName(), file_get_contents($attachment->getTemporaryFile()));
+			}
 		}
 
 		return $message;

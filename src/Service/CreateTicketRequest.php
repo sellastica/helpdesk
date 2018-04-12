@@ -15,6 +15,8 @@ class CreateTicketRequest
 	private $url;
 	/** @var \Sellastica\Project\Entity\Project|null */
 	private $project;
+	/** @var \Sellastica\Helpdesk\Model\TicketType */
+	private $type;
 	/** @var \Sellastica\Helpdesk\Model\TicketStatus */
 	private $status;
 	/** @var \Nette\Http\FileUpload[] */
@@ -27,13 +29,15 @@ class CreateTicketRequest
 	 * @param string $senderName
 	 * @param \Sellastica\Identity\Model\Email $senderEmail
 	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
+	 * @param \Sellastica\Helpdesk\Model\TicketType $type
 	 */
 	public function __construct(
 		string $subject,
 		string $message,
 		string $senderName,
 		\Sellastica\Identity\Model\Email $senderEmail,
-		\Sellastica\Helpdesk\Model\TicketStatus $status
+		\Sellastica\Helpdesk\Model\TicketStatus $status,
+		\Sellastica\Helpdesk\Model\TicketType $type
 	)
 	{
 		$this->subject = $subject;
@@ -41,6 +45,7 @@ class CreateTicketRequest
 		$this->senderName = $senderName;
 		$this->senderEmail = $senderEmail;
 		$this->status = $status;
+		$this->type = $type;
 	}
 
 	/**
@@ -93,7 +98,7 @@ class CreateTicketRequest
 
 	/**
 	 * @param null|string $url
-	 * @return \Helpdesk\Service\CreateTicketRequest
+	 * @return CreateTicketRequest
 	 */
 	public function setUrl(?string $url): CreateTicketRequest
 	{
@@ -111,7 +116,7 @@ class CreateTicketRequest
 
 	/**
 	 * @param null|\Sellastica\Project\Entity\Project $project
-	 * @return \Helpdesk\Service\CreateTicketRequest
+	 * @return CreateTicketRequest
 	 */
 	public function setProject(?\Sellastica\Project\Entity\Project $project): CreateTicketRequest
 	{
@@ -129,11 +134,19 @@ class CreateTicketRequest
 
 	/**
 	 * @param \Nette\Http\FileUpload $attachment
-	 * @return \Helpdesk\Service\CreateTicketRequest
+	 * @return CreateTicketRequest
 	 */
 	public function addAttachment(\Nette\Http\FileUpload $attachment): CreateTicketRequest
 	{
 		$this->attachments[] = $attachment;
 		return $this;
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Model\TicketType
+	 */
+	public function getType(): \Sellastica\Helpdesk\Model\TicketType
+	{
+		return $this->type;
 	}
 }
