@@ -23,11 +23,11 @@ class MessageRelations implements \Sellastica\Entity\Relation\IEntityRelations
 	}
 
 	/**
-	 * @return \Sellastica\Project\Entity\Project
+	 * @return Ticket
 	 */
-	public function getTicket(): \Sellastica\Project\Entity\Project
+	public function getTicket(): Ticket
 	{
-		return $this->em->getRepository(\Sellastica\Project\Entity\Project::class)->find($this->message->getTicketId());
+		return $this->em->getRepository(Ticket::class)->find($this->message->getTicketId());
 	}
 
 	/**

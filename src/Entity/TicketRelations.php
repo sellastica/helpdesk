@@ -47,4 +47,14 @@ class TicketRelations implements \Sellastica\Entity\Relation\IEntityRelations
 			'ticketId' => $this->ticket->getId(),
 		], \Sellastica\Entity\Configuration::sortBy('id'));
 	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Entity\Message|null
+	 */
+	public function getLastMessage(): ?Message
+	{
+		return $this->em->getRepository(Message::class)->findOneBy([
+			'ticketId' => $this->ticket->getId(),
+		], \Sellastica\Entity\Configuration::sortBy('id', false));
+	}
 }

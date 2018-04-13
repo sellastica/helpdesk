@@ -103,14 +103,6 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	}
 
 	/**
-	 * @param int|null $staffId
-	 */
-	public function setStaffId(?int $staffId): void
-	{
-		$this->staffId = $staffId;
-	}
-
-	/**
 	 * @return Staff|null
 	 */
 	public function getStaff(): ?Staff
@@ -120,6 +112,15 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 		}
 
 		return $this->staff;
+	}
+
+	/**
+	 * @param null|\Sellastica\Helpdesk\Entity\Staff $staff
+	 */
+	public function setStaff(?Staff $staff): void
+	{
+		$this->staff = $staff;
+		$this->staffId = $staff ? $staff->getId() : null;
 	}
 
 	/**
@@ -154,6 +155,19 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 		$this->status = $status;
 	}
 
+	public function close(): void
+	{
+		$this->setStatus(\Sellastica\Helpdesk\Model\TicketStatus::closed());
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Model\TicketType
+	 */
+	public function getType(): \Sellastica\Helpdesk\Model\TicketType
+	{
+		return $this->type;
+	}
+
 	/**
 	 * @return null|string
 	 */
@@ -176,6 +190,14 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	public function getMessages(): MessageCollection
 	{
 		return $this->relationService->getMessages();
+	}
+
+	/**
+	 * @return null|\Sellastica\Helpdesk\Entity\Message
+	 */
+	public function getLastMessage(): ?Message
+	{
+		return $this->relationService->getLastMessage();
 	}
 
 	/**

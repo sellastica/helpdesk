@@ -40,6 +40,7 @@ class TicketService
 			->url($request->getUrl())
 			->status($request->getStatus())
 			->type($request->getType())
+			->staffId($request->getStaff() ? $request->getStaff()->getId() : null)
 			->build();
 		$this->em->persist($ticket);
 		$this->em->flush(); //retrieve ticket ID
@@ -52,6 +53,7 @@ class TicketService
 			$request->getSenderEmail(),
 			$request->getStatus()
 		);
+		$messageRequest->setStaff($request->getStaff());
 		foreach ($request->getAttachments() as $attachment) {
 			$messageRequest->addAttachment($attachment);
 		}
@@ -68,8 +70,13 @@ class TicketService
 	public function createMessage(CreateMessageRequest $request): \Sellastica\Helpdesk\Entity\Message
 	{
 		$message = \Sellastica\Helpdesk\Entity\MessageBuilder::create(
-			$request->getTicketId(), $request->getMessage(), $request->getSenderName(), $request->getSenderEmail()
-		)->build();
+			$request->getTicketId(),
+			$request->getMessage(),
+			$request->getSenderName(),
+			$request->getSenderEmail()
+		)->status($request->getStatus())
+			->staffId($request->getStaff() ? $request->getStaff()->getId() : null)
+			->build();
 		$this->em->persist($message);
 
 		if ($request->getAttachments()) {
@@ -78,6 +85,9 @@ class TicketService
 				$message->addAttachment($attachment->getName(), file_get_contents($attachment->getTemporaryFile()));
 			}
 		}
+
+		//ticket status
+		$message->getTicket()->setStatus($message->getStatus());
 
 		return $message;
 	}

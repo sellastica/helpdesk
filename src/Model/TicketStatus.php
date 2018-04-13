@@ -79,6 +79,33 @@ class TicketStatus
 	}
 
 	/**
+	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
+	 * @return bool
+	 */
+	public function equals(TicketStatus $status): bool
+	{
+		return $this->code === $status->getCode();
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Model\TicketStatus
+	 */
+	public function getOpposite(): TicketStatus
+	{
+		switch ($this->code) {
+			case self::OPEN:
+				return self::pending();
+				break;
+			case self::PENDING:
+				return self::open();
+				break;
+			default:
+				return self::closed();
+				break;
+		}
+	}
+
+	/**
 	 * @param string $code
 	 * @return TicketStatus
 	 * @throws \InvalidArgumentException

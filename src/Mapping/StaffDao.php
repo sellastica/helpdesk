@@ -24,7 +24,7 @@ class StaffDao extends Dao
 	): IBuilder
 	{
 		$data->email = new \Sellastica\Identity\Model\Email($data->email);
-		return StaffBuilder::create($data->firstName, $data->lastName, $data->email)
+		return StaffBuilder::create($data->firstName, $data->lastName, $data->email, $data->crmUserId)
 			->hydrate($data);
 	}
 

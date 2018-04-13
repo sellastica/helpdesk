@@ -21,6 +21,8 @@ class CreateTicketRequest
 	private $status;
 	/** @var \Nette\Http\FileUpload[] */
 	private $attachments = [];
+	/** @var \Sellastica\Helpdesk\Entity\Staff|null */
+	private $staff;
 
 
 	/**
@@ -148,5 +150,23 @@ class CreateTicketRequest
 	public function getType(): \Sellastica\Helpdesk\Model\TicketType
 	{
 		return $this->type;
+	}
+
+	/**
+	 * @return null|\Sellastica\Helpdesk\Entity\Staff
+	 */
+	public function getStaff(): ?\Sellastica\Helpdesk\Entity\Staff
+	{
+		return $this->staff;
+	}
+
+	/**
+	 * @param null|\Sellastica\Helpdesk\Entity\Staff $staff
+	 * @return \Sellastica\Helpdesk\Service\CreateTicketRequest
+	 */
+	public function setStaff(?\Sellastica\Helpdesk\Entity\Staff $staff): CreateTicketRequest
+	{
+		$this->staff = $staff;
+		return $this;
 	}
 }

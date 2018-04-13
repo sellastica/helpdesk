@@ -15,6 +15,8 @@ class Staff extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellast
 	private $lastName;
 	/** @var \Sellastica\Identity\Model\Email @required */
 	private $email;
+	/** @var int @required */
+	private $crmUserId;
 
 
 	/**
@@ -90,6 +92,14 @@ class Staff extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellast
 	}
 
 	/**
+	 * @return int
+	 */
+	public function getCrmUserId(): int
+	{
+		return $this->crmUserId;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function toArray(): array
@@ -99,6 +109,7 @@ class Staff extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellast
 			'firstName' => $this->firstName,
 			'lastName' => $this->lastName,
 			'email' => $this->email->getEmail(),
+			'crmUserId' => $this->crmUserId,
 		];
 	}
 }

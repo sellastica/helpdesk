@@ -15,6 +15,8 @@ class CreateMessageRequest
 	private $status;
 	/** @var \Nette\Http\FileUpload[] */
 	private $attachments = [];
+	/** @var \Sellastica\Helpdesk\Entity\Staff|null */
+	private $staff;
 
 
 	/**
@@ -89,11 +91,29 @@ class CreateMessageRequest
 
 	/**
 	 * @param \Nette\Http\FileUpload $attachment
-	 * @return \Helpdesk\Service\CreateMessageRequest
+	 * @return CreateMessageRequest
 	 */
 	public function addAttachment(\Nette\Http\FileUpload $attachment): CreateMessageRequest
 	{
 		$this->attachments[] = $attachment;
+		return $this;
+	}
+
+	/**
+	 * @return null|\Sellastica\Helpdesk\Entity\Staff
+	 */
+	public function getStaff(): ?\Sellastica\Helpdesk\Entity\Staff
+	{
+		return $this->staff;
+	}
+
+	/**
+	 * @param null|\Sellastica\Helpdesk\Entity\Staff $staff
+	 * @return \Sellastica\Helpdesk\Service\CreateMessageRequest
+	 */
+	public function setStaff(?\Sellastica\Helpdesk\Entity\Staff $staff): CreateMessageRequest
+	{
+		$this->staff = $staff;
 		return $this;
 	}
 }

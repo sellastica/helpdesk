@@ -89,6 +89,15 @@ class TicketPriority
 	}
 
 	/**
+	 * @param \Sellastica\Helpdesk\Model\TicketPriority $priority
+	 * @return bool
+	 */
+	public function equals(TicketPriority $priority): bool
+	{
+		return $this->code === $priority->getCode();
+	}
+
+	/**
 	 * @param string $code
 	 * @return TicketPriority
 	 * @throws \InvalidArgumentException
@@ -103,7 +112,7 @@ class TicketPriority
 	}
 
 	/**
-	 * @return \Helpdesk\Model\TicketPriority
+	 * @return TicketPriority
 	 */
 	public static function none(): TicketPriority
 	{
