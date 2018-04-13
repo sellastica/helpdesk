@@ -15,12 +15,14 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	private $ticketId;
 	/** @var \Sellastica\Helpdesk\Entity\Ticket */
 	private $ticket;
+	/** @var int @required */
+	private $contactId;
+	/** @var \Sellastica\Helpdesk\Entity\Contact */
+	private $contact;
+	/** @var \Sellastica\Helpdesk\Model\MessageSender @required */
+	private $sender;
 	/** @var string @required */
 	private $message;
-	/** @var string @required */
-	private $senderName;
-	/** @var \Sellastica\Identity\Model\Email @required */
-	private $senderEmail;
 	/** @var int|null @optional */
 	private $staffId;
 	/** @var \Sellastica\Helpdesk\Entity\Staff */
@@ -69,19 +71,29 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	}
 
 	/**
-	 * @return string
+	 * @return \Sellastica\Helpdesk\Model\MessageSender
 	 */
-	public function getSenderName(): string
+	public function getSender(): \Sellastica\Helpdesk\Model\MessageSender
 	{
-		return $this->senderName;
+		return $this->sender;
 	}
 
 	/**
-	 * @param string $senderName
+	 * @param \Sellastica\Helpdesk\Model\MessageSender $sender
 	 */
-	public function setSenderName(string $senderName): void
+	public function setSender(\Sellastica\Helpdesk\Model\MessageSender $sender): void
 	{
-		$this->senderName = $senderName;
+		$this->sender = $sender;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getSenderName(): ?string
+	{
+		return $this->sender->isStaff()
+			? $this->getStaff()->getFullName()
+			: $this->getContact()->getFullName();
 	}
 
 	/**
@@ -89,15 +101,29 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	 */
 	public function getSenderEmail(): string
 	{
-		return $this->senderEmail->getEmail();
+		return $this->sender->isStaff()
+			? $this->getStaff()->getEmail()
+			: $this->getContact()->getEmail();
 	}
 
 	/**
-	 * @param \Sellastica\Identity\Model\Email $senderEmail
+	 * @return string|null
 	 */
-	public function setSenderEmail(\Sellastica\Identity\Model\Email $senderEmail): void
+	public function getRecipientName(): ?string
 	{
-		$this->senderEmail = $senderEmail;
+		return $this->sender->isStaff()
+			? $this->getContact()->getFullName()
+			: $this->getStaff()->getFullName();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRecipientEmail(): string
+	{
+		return $this->sender->isStaff()
+			? $this->getContact()->getFullName()
+			: $this->getStaff()->getFullName();
 	}
 
 	/**
@@ -142,6 +168,35 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 		}
 
 		return $this->staff;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getContactId(): int
+	{
+		return $this->contactId;
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Entity\Contact
+	 */
+	public function getContact(): \Sellastica\Helpdesk\Entity\Contact
+	{
+		if (!isset($this->contact)) {
+			$this->contact = $this->relationService->getContact();
+		}
+
+		return $this->contact;
+	}
+
+	/**
+	 * @param \Sellastica\Helpdesk\Entity\Contact $contact
+	 */
+	public function setContact(\Sellastica\Helpdesk\Entity\Contact $contact): void
+	{
+		$this->contact = $contact;
+		$this->contactId = $contact ? $contact->getId() : null;
 	}
 
 	/**
@@ -194,11 +249,11 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 		return [
 			'id' => $this->id,
 			'ticketId' => $this->ticketId,
-			'message' => $this->message,
 			'staffId' => $this->staffId,
-			'senderName' => $this->senderName,
-			'senderEmail' => $this->senderEmail->getEmail(),
+			'contactId' => $this->contactId,
+			'message' => $this->message,
 			'status' => $this->status->getCode(),
+			'sender' => $this->sender->getCode(),
 		];
 	}
 }

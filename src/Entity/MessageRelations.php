@@ -47,4 +47,12 @@ class MessageRelations implements \Sellastica\Entity\Relation\IEntityRelations
 			'messageId' => $this->message->getId(),
 		]);
 	}
+
+	/**
+	 * @return null|\Sellastica\Helpdesk\Entity\Contact
+	 */
+	public function getContact(): ?\Sellastica\Helpdesk\Entity\Contact
+	{
+		return $this->em->getRepository(Contact::class)->find($this->message->getContactId());
+	}
 }

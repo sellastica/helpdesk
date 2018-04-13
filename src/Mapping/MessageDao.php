@@ -23,10 +23,13 @@ class MessageDao extends Dao
 		$second = null
 	): IBuilder
 	{
-		$data->senderEmail = new \Sellastica\Identity\Model\Email($data->senderEmail);
 		$data->status = \Sellastica\Helpdesk\Model\TicketStatus::from($data->status);
-		return MessageBuilder::create($data->ticketId, $data->message, $data->senderName, $data->senderEmail)
-			->hydrate($data);
+		return MessageBuilder::create(
+			$data->ticketId,
+			$data->contactId,
+			\Sellastica\Helpdesk\Model\MessageSender::from($data->sender),
+			$data->message
+		)->hydrate($data);
 	}
 
 	/**

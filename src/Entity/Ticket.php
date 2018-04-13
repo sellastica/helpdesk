@@ -15,6 +15,10 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	private $projectId;
 	/** @var \Sellastica\Project\Entity\Project */
 	private $project;
+	/** @var int @required */
+	private $contactId;
+	/** @var \Sellastica\Helpdesk\Entity\Contact */
+	private $contact;
 	/** @var string @required */
 	private $subject;
 	/** @var int|null @optional */
@@ -76,6 +80,35 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 		}
 
 		return $this->project;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getContactId(): int
+	{
+		return $this->contactId;
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Entity\Contact
+	 */
+	public function getContact(): \Sellastica\Helpdesk\Entity\Contact
+	{
+		if (!isset($this->contact)) {
+			$this->contact = $this->relationService->getContact();
+		}
+
+		return $this->contact;
+	}
+
+	/**
+	 * @param \Sellastica\Helpdesk\Entity\Contact $contact
+	 */
+	public function setContact(\Sellastica\Helpdesk\Entity\Contact $contact): void
+	{
+		$this->contact = $contact;
+		$this->contactId = $contact ? $contact->getId() : null;
 	}
 
 	/**
@@ -208,6 +241,7 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 		return [
 			'id' => $this->id,
 			'projectId' => $this->projectId,
+			'contactId' => $this->contactId,
 			'subject' => $this->subject,
 			'staffId' => $this->staffId,
 			'priority' => $this->priority->getCode(),

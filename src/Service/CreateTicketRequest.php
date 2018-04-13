@@ -7,10 +7,6 @@ class CreateTicketRequest
 	private $subject;
 	/** @var string */
 	private $message;
-	/** @var string */
-	private $senderName;
-	/** @var \Sellastica\Identity\Model\Email */
-	private $senderEmail;
 	/** @var string|null */
 	private $url;
 	/** @var \Sellastica\Project\Entity\Project|null */
@@ -23,31 +19,35 @@ class CreateTicketRequest
 	private $attachments = [];
 	/** @var \Sellastica\Helpdesk\Entity\Staff|null */
 	private $staff;
+	/** @var \Sellastica\Helpdesk\Entity\Contact */
+	private $contact;
+	/** @var \Sellastica\Helpdesk\Model\MessageSender */
+	private $sender;
 
 
 	/**
 	 * @param string $subject
 	 * @param string $message
-	 * @param string $senderName
-	 * @param \Sellastica\Identity\Model\Email $senderEmail
+	 * @param \Sellastica\Helpdesk\Entity\Contact $contact
 	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
 	 * @param \Sellastica\Helpdesk\Model\TicketType $type
+	 * @param \Sellastica\Helpdesk\Model\MessageSender $sender
 	 */
 	public function __construct(
 		string $subject,
 		string $message,
-		string $senderName,
-		\Sellastica\Identity\Model\Email $senderEmail,
+		\Sellastica\Helpdesk\Entity\Contact $contact,
 		\Sellastica\Helpdesk\Model\TicketStatus $status,
-		\Sellastica\Helpdesk\Model\TicketType $type
+		\Sellastica\Helpdesk\Model\TicketType $type,
+		\Sellastica\Helpdesk\Model\MessageSender $sender
 	)
 	{
 		$this->subject = $subject;
 		$this->message = $message;
-		$this->senderName = $senderName;
-		$this->senderEmail = $senderEmail;
 		$this->status = $status;
 		$this->type = $type;
+		$this->contact = $contact;
+		$this->sender = $sender;
 	}
 
 	/**
@@ -64,22 +64,6 @@ class CreateTicketRequest
 	public function getMessage(): string
 	{
 		return $this->message;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getSenderName(): string
-	{
-		return $this->senderName;
-	}
-
-	/**
-	 * @return \Sellastica\Identity\Model\Email
-	 */
-	public function getSenderEmail(): \Sellastica\Identity\Model\Email
-	{
-		return $this->senderEmail;
 	}
 
 	/**
@@ -168,5 +152,21 @@ class CreateTicketRequest
 	{
 		$this->staff = $staff;
 		return $this;
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Entity\Contact
+	 */
+	public function getContact(): \Sellastica\Helpdesk\Entity\Contact
+	{
+		return $this->contact;
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Model\MessageSender
+	 */
+	public function getSender(): \Sellastica\Helpdesk\Model\MessageSender
+	{
+		return $this->sender;
 	}
 }

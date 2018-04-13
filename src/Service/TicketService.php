@@ -36,22 +36,23 @@ class TicketService
 		$project = $request->getProject() ?? $this->projectAccessor->get();
 
 		//ticket
-		$ticket = \Sellastica\Helpdesk\Entity\TicketBuilder::create($project->getId(), $request->getSubject())
+		$ticket = \Sellastica\Helpdesk\Entity\TicketBuilder::create($project->getId(), $request->getContact()->getId(), $request->getSubject())
 			->url($request->getUrl())
 			->status($request->getStatus())
 			->type($request->getType())
 			->staffId($request->getStaff() ? $request->getStaff()->getId() : null)
 			->build();
+
 		$this->em->persist($ticket);
 		$this->em->flush(); //retrieve ticket ID
 
 		//message
 		$messageRequest = new CreateMessageRequest(
-			$ticket->getId(),
+			$ticket,
+			$request->getContact(),
 			$request->getMessage(),
-			$request->getSenderName(),
-			$request->getSenderEmail(),
-			$request->getStatus()
+			$request->getStatus(),
+			$request->getSender()
 		);
 		$messageRequest->setStaff($request->getStaff());
 		foreach ($request->getAttachments() as $attachment) {
@@ -70,10 +71,10 @@ class TicketService
 	public function createMessage(CreateMessageRequest $request): \Sellastica\Helpdesk\Entity\Message
 	{
 		$message = \Sellastica\Helpdesk\Entity\MessageBuilder::create(
-			$request->getTicketId(),
-			$request->getMessage(),
-			$request->getSenderName(),
-			$request->getSenderEmail()
+			$request->getTicket()->getId(),
+			$request->getContact()->getId(),
+			$request->getSender(),
+			$request->getMessage()
 		)->status($request->getStatus())
 			->staffId($request->getStaff() ? $request->getStaff()->getId() : null)
 			->build();

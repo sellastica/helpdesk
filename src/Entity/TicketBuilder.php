@@ -13,6 +13,8 @@ class TicketBuilder implements IBuilder
 
 	/** @var int */
 	private $projectId;
+	/** @var int */
+	private $contactId;
 	/** @var string */
 	private $subject;
 	/** @var int|null */
@@ -28,14 +30,17 @@ class TicketBuilder implements IBuilder
 
 	/**
 	 * @param int $projectId
+	 * @param int $contactId
 	 * @param string $subject
 	 */
 	public function __construct(
 		int $projectId,
+		int $contactId,
 		string $subject
 	)
 	{
 		$this->projectId = $projectId;
+		$this->contactId = $contactId;
 		$this->subject = $subject;
 	}
 
@@ -45,6 +50,14 @@ class TicketBuilder implements IBuilder
 	public function getProjectId(): int
 	{
 		return $this->projectId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getContactId(): int
+	{
+		return $this->contactId;
 	}
 
 	/**
@@ -163,14 +176,16 @@ class TicketBuilder implements IBuilder
 
 	/**
 	 * @param int $projectId
+	 * @param int $contactId
 	 * @param string $subject
 	 * @return self
 	 */
 	public static function create(
 		int $projectId,
+		int $contactId,
 		string $subject
 	): self
 	{
-		return new self($projectId, $subject);
+		return new self($projectId, $contactId, $subject);
 	}
 }

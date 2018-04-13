@@ -3,50 +3,58 @@ namespace Sellastica\Helpdesk\Service;
 
 class CreateMessageRequest
 {
-	/** @var int */
-	private $ticketId;
 	/** @var string */
 	private $message;
-	/** @var string */
-	private $senderName;
-	/** @var \Sellastica\Identity\Model\Email */
-	private $senderEmail;
 	/** @var \Sellastica\Helpdesk\Model\TicketStatus */
 	private $status;
 	/** @var \Nette\Http\FileUpload[] */
 	private $attachments = [];
 	/** @var \Sellastica\Helpdesk\Entity\Staff|null */
 	private $staff;
+	/** @var \Sellastica\Helpdesk\Entity\Ticket */
+	private $ticket;
+	/** @var \Sellastica\Helpdesk\Entity\Contact */
+	private $contact;
+	/** @var \Sellastica\Helpdesk\Model\MessageSender */
+	private $sender;
 
 
 	/**
-	 * @param int $ticketId
+	 * @param \Sellastica\Helpdesk\Entity\Ticket $ticket
+	 * @param \Sellastica\Helpdesk\Entity\Contact $contact
 	 * @param string $message
-	 * @param string $senderName
-	 * @param \Sellastica\Identity\Model\Email $senderEmail
 	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
+	 * @param \Sellastica\Helpdesk\Model\MessageSender $sender
 	 */
 	public function __construct(
-		int $ticketId,
+		\Sellastica\Helpdesk\Entity\Ticket $ticket,
+		\Sellastica\Helpdesk\Entity\Contact $contact,
 		string $message,
-		string $senderName,
-		\Sellastica\Identity\Model\Email $senderEmail,
-		\Sellastica\Helpdesk\Model\TicketStatus $status
+		\Sellastica\Helpdesk\Model\TicketStatus $status,
+		\Sellastica\Helpdesk\Model\MessageSender $sender
 	)
 	{
-		$this->ticketId = $ticketId;
 		$this->message = $message;
-		$this->senderName = $senderName;
-		$this->senderEmail = $senderEmail;
 		$this->status = $status;
+		$this->ticket = $ticket;
+		$this->contact = $contact;
+		$this->sender = $sender;
 	}
 
 	/**
-	 * @return int
+	 * @return \Sellastica\Helpdesk\Entity\Ticket
 	 */
-	public function getTicketId(): int
+	public function getTicket(): \Sellastica\Helpdesk\Entity\Ticket
 	{
-		return $this->ticketId;
+		return $this->ticket;
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Entity\Contact
+	 */
+	public function getContact(): \Sellastica\Helpdesk\Entity\Contact
+	{
+		return $this->contact;
 	}
 
 	/**
@@ -55,22 +63,6 @@ class CreateMessageRequest
 	public function getMessage(): string
 	{
 		return $this->message;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getSenderName(): string
-	{
-		return $this->senderName;
-	}
-
-	/**
-	 * @return \Sellastica\Identity\Model\Email
-	 */
-	public function getSenderEmail(): \Sellastica\Identity\Model\Email
-	{
-		return $this->senderEmail;
 	}
 
 	/**
@@ -115,5 +107,13 @@ class CreateMessageRequest
 	{
 		$this->staff = $staff;
 		return $this;
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Model\MessageSender
+	 */
+	public function getSender(): \Sellastica\Helpdesk\Model\MessageSender
+	{
+		return $this->sender;
 	}
 }

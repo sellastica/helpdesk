@@ -29,7 +29,7 @@ class TicketDao extends Dao
 		$data->priority = \Sellastica\Helpdesk\Model\TicketPriority::from($data->priority);
 		$data->status = \Sellastica\Helpdesk\Model\TicketStatus::from($data->status);
 		$data->type = \Sellastica\Helpdesk\Model\TicketType::from($data->type);
-		return TicketBuilder::create($data->projectId, $data->subject)
+		return TicketBuilder::create($data->projectId, $data->contactId, $data->subject)
 			->hydrate($data);
 	}
 

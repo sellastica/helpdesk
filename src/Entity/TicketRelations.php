@@ -57,4 +57,12 @@ class TicketRelations implements \Sellastica\Entity\Relation\IEntityRelations
 			'ticketId' => $this->ticket->getId(),
 		], \Sellastica\Entity\Configuration::sortBy('id', false));
 	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Entity\Contact
+	 */
+	public function getContact(): \Sellastica\Helpdesk\Entity\Contact
+	{
+		return $this->em->getRepository(Contact::class)->find($this->ticket->getContactId());
+	}
 }
