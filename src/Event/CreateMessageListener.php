@@ -7,7 +7,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	private $em;
 	/** @var \Sellastica\Project\Model\ProjectAccessor */
 	private $projectAccessor;
-	/** @var \Nette\Mail\IMailer */
+	/** @var \Sellastica\SmtpMailer\SmtpMailer */
 	private $mailer;
 	/** @var \Nette\Localization\ITranslator */
 	private $translator;
@@ -22,16 +22,15 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	/**
 	 * @param \Sellastica\Entity\EntityManager $em
 	 * @param \Sellastica\Project\Model\ProjectAccessor $projectAccessor
-	 * @param \Nette\Mail\IMailer $mailer
 	 * @param \Nette\Localization\ITranslator $translator
 	 * @param \Nette\DI\Container $container
 	 * @param \Sellastica\Monolog\Logger $logger
 	 * @param \Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
+	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(
 		\Sellastica\Entity\EntityManager $em,
 		\Sellastica\Project\Model\ProjectAccessor $projectAccessor,
-		\Nette\Mail\IMailer $mailer,
 		\Nette\Localization\ITranslator $translator,
 		\Nette\DI\Container $container,
 		\Sellastica\Monolog\Logger $logger,
@@ -40,11 +39,13 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	{
 		$this->em = $em;
 		$this->projectAccessor = $projectAccessor;
-		$this->mailer = $mailer;
 		$this->translator = $translator;
 		$this->container = $container;
-		$this->logger = $logger->channel('helpdesk');
 		$this->latteFactory = $latteFactory;
+		$this->logger = $logger->channel('helpdesk');
+		$this->mailer = new \Sellastica\SmtpMailer\SmtpMailer([
+			'mode' => $this->container->parameters['mailer']['mode'],
+		]);
 	}
 
 	/**
@@ -62,8 +63,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	 */
 	public function execute(MessageEvent $event): void
 	{
-		$message = $event->getMessage();
-		$ticket = $message->getTicket();
+		$ticket = $event->getMessage()->getTicket();
 		$sender = $event->getSender();
 		$supportEmail = $this->container->parameters['helpdesk']['email'];
 		$latte = $this->latteFactory->create();
@@ -78,9 +78,9 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			$message->addTo($supportEmail);
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/message_received.latte', [
-					'message' => $message,
+					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl('https://crm.sellastica.com/')
+					'ticket_url' => $ticket->getTicketUrl('https://crm.sellastica.com/'),
 				])
 			);
 		} else {
@@ -89,11 +89,16 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			$message->setSubject($subject);
 			$message->setFrom($supportEmail);
 			$message->addTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
+
+			$templateFile = $event->getMessage()->isInternalNote()
+				? __DIR__ . '/../UI/Emails/support/internal_note_created.latte'
+				: __DIR__ . '/../UI/Emails/contact/message_received_from_support.latte';
+
 			$message->setHtmlBody(
-				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/message_received_from_support.latte', [
-					'message' => $message,
+				$latte->renderToString($templateFile, [
+					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl())
+					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl()),
 				])
 			);
 		}

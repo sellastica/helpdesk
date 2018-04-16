@@ -7,7 +7,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 	private $em;
 	/** @var \Sellastica\Project\Model\ProjectAccessor */
 	private $projectAccessor;
-	/** @var \Nette\Mail\IMailer */
+	/** @var \Sellastica\SmtpMailer\SmtpMailer */
 	private $mailer;
 	/** @var \Nette\Localization\ITranslator */
 	private $translator;
@@ -40,11 +40,13 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 	{
 		$this->em = $em;
 		$this->projectAccessor = $projectAccessor;
-		$this->mailer = $mailer;
 		$this->translator = $translator;
 		$this->container = $container;
-		$this->logger = $logger->channel('helpdesk');
 		$this->latteFactory = $latteFactory;
+		$this->logger = $logger->channel('helpdesk');
+		$this->mailer = new \Sellastica\SmtpMailer\SmtpMailer([
+			'mode' => $this->container->parameters['mailer']['mode'],
+		]);
 	}
 
 	/**
