@@ -29,6 +29,8 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	private $staff;
 	/** @var \Sellastica\Helpdesk\Model\TicketStatus @optional */
 	private $status;
+	/** @var bool @optional */
+	private $internalNote = false;
 	/** @var \Sellastica\Helpdesk\Entity\MessageAttachmentCollection */
 	private $attachments;
 
@@ -91,19 +93,27 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	 */
 	public function getSenderName(): ?string
 	{
-		return $this->sender->isStaff()
-			? $this->getStaff()->getFullName()
-			: $this->getContact()->getFullName();
+		if ($this->sender->isStaff() && $this->getStaff()) {
+			return $this->getStaff()->getFullName();
+		} elseif ($this->sender->isContact() && $this->getContact()) {
+			return $this->getContact()->getFullName();
+		}
+
+		return null;
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getSenderEmail(): string
+	public function getSenderEmail(): ?string
 	{
-		return $this->sender->isStaff()
-			? $this->getStaff()->getEmail()
-			: $this->getContact()->getEmail();
+		if ($this->sender->isStaff() && $this->getStaff()) {
+			return $this->getStaff()->getEmail();
+		} elseif ($this->sender->isContact() && $this->getContact()) {
+			return $this->getContact()->getEmail();
+		}
+
+		return null;
 	}
 
 	/**
@@ -111,9 +121,13 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	 */
 	public function getRecipientName(): ?string
 	{
-		return $this->sender->isStaff()
-			? $this->getContact()->getFullName()
-			: $this->getStaff()->getFullName();
+		if ($this->sender->isStaff() && $this->getContact()) {
+			return $this->getContact()->getFullName();
+		} elseif ($this->sender->isContact() && $this->getStaff()) {
+			return $this->getStaff()->getFullName();
+		}
+
+		return null;
 	}
 
 	/**
@@ -121,9 +135,13 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	 */
 	public function getRecipientEmail(): string
 	{
-		return $this->sender->isStaff()
-			? $this->getContact()->getFullName()
-			: $this->getStaff()->getFullName();
+		if ($this->sender->isStaff() && $this->getContact()) {
+			return $this->getContact()->getEmail();
+		} elseif ($this->sender->isContact() && $this->getStaff()) {
+			return $this->getStaff()->getEmail();
+		}
+
+		return null;
 	}
 
 	/**
@@ -216,6 +234,22 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isInternalNote(): bool
+	{
+		return $this->internalNote;
+	}
+
+	/**
+	 * @param bool $internalNote
+	 */
+	public function setInternalNote(bool $internalNote): void
+	{
+		$this->internalNote = $internalNote;
+	}
+
+	/**
 	 * @return \Sellastica\Helpdesk\Entity\MessageAttachmentCollection
 	 */
 	public function getAttachments(): \Sellastica\Helpdesk\Entity\MessageAttachmentCollection
@@ -254,6 +288,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 			'message' => $this->message,
 			'status' => $this->status->getCode(),
 			'sender' => $this->sender->getCode(),
+			'internalNote' => $this->internalNote,
 		];
 	}
 }

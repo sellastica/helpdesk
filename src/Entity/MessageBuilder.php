@@ -23,6 +23,8 @@ class MessageBuilder implements IBuilder
 	private $staffId;
 	/** @var \Sellastica\Helpdesk\Model\TicketStatus */
 	private $status;
+	/** @var bool */
+	private $internalNote = false;
 
 	/**
 	 * @param int $ticketId
@@ -108,6 +110,24 @@ class MessageBuilder implements IBuilder
 	public function status(\Sellastica\Helpdesk\Model\TicketStatus $status)
 	{
 		$this->status = $status;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getInternalNote(): bool
+	{
+		return $this->internalNote;
+	}
+
+	/**
+	 * @param bool $internalNote
+	 * @return $this
+	 */
+	public function internalNote(bool $internalNote)
+	{
+		$this->internalNote = $internalNote;
 		return $this;
 	}
 

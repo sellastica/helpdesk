@@ -17,6 +17,10 @@ class CreateMessageRequest
 	private $contact;
 	/** @var \Sellastica\Helpdesk\Model\MessageSender */
 	private $sender;
+	/** @var bool */
+	private $internalNote = false;
+	/** @var bool */
+	private $fireEvent = true;
 
 
 	/**
@@ -115,5 +119,41 @@ class CreateMessageRequest
 	public function getSender(): \Sellastica\Helpdesk\Model\MessageSender
 	{
 		return $this->sender;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isInternalNote(): bool
+	{
+		return $this->internalNote;
+	}
+
+	/**
+	 * @param bool $internalNote
+	 * @return \Sellastica\Helpdesk\Service\CreateMessageRequest
+	 */
+	public function setInternalNote(bool $internalNote): CreateMessageRequest
+	{
+		$this->internalNote = $internalNote;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getFireEvent(): bool
+	{
+		return $this->fireEvent;
+	}
+
+	/**
+	 * @param bool $fireEvent
+	 * @return CreateMessageRequest
+	 */
+	public function setFireEvent(bool $fireEvent): CreateMessageRequest
+	{
+		$this->fireEvent = $fireEvent;
+		return $this;
 	}
 }

@@ -7,24 +7,24 @@ class TicketService
 	private $em;
 	/** @var \Sellastica\Project\Model\ProjectAccessor */
 	private $projectAccessor;
-	/** @var \Sellastica\AdminUI\User\Model\AdminUserAccessor */
-	private $adminUserAccessor;
+	/** @var \Sellastica\Events\EventDispatcher */
+	private $eventDispatcher;
 
 
 	/**
 	 * @param \Sellastica\Entity\EntityManager $em
 	 * @param \Sellastica\Project\Model\ProjectAccessor $projectAccessor
-	 * @param \Sellastica\AdminUI\User\Model\AdminUserAccessor $adminUserAccessor
+	 * @param \Sellastica\Events\EventDispatcher $eventDispatcher
 	 */
 	public function __construct(
 		\Sellastica\Entity\EntityManager $em,
 		\Sellastica\Project\Model\ProjectAccessor $projectAccessor,
-		\Sellastica\AdminUI\User\Model\AdminUserAccessor $adminUserAccessor
+		\Sellastica\Events\EventDispatcher $eventDispatcher
 	)
 	{
 		$this->em = $em;
 		$this->projectAccessor = $projectAccessor;
-		$this->adminUserAccessor = $adminUserAccessor;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -46,6 +46,11 @@ class TicketService
 		$this->em->persist($ticket);
 		$this->em->flush(); //retrieve ticket ID
 
+		//fire event
+		$this->eventDispatcher->dispatchEvent(
+			'ticket.created', new \Sellastica\Helpdesk\Event\TicketEvent($ticket, $request->getSender())
+		);
+
 		//message
 		$messageRequest = new CreateMessageRequest(
 			$ticket,
@@ -59,6 +64,9 @@ class TicketService
 			$messageRequest->addAttachment($attachment);
 		}
 
+		//disable event fire on message create (we do not want to send another email)
+		$messageRequest->setFireEvent(false);
+
 		$this->createMessage($messageRequest);
 
 		return $ticket;
@@ -70,14 +78,31 @@ class TicketService
 	 */
 	public function createMessage(CreateMessageRequest $request): \Sellastica\Helpdesk\Entity\Message
 	{
+		//staff
+		if ($request->getStaff()) {
+			$staff = $request->getStaff();
+		} elseif ($request->getTicket()->getStaff()) { //ticket is assigned to...
+			$staff = $request->getTicket()->getStaff();
+		} elseif ($request->getTicket()->getLastMessage() && $request->getTicket()->getLastMessage()->getStaff()) {
+			$staff = $request->getTicket()->getLastMessage()->getStaff();
+		} else {
+			$staff = null;
+		}
+
 		$message = \Sellastica\Helpdesk\Entity\MessageBuilder::create(
 			$request->getTicket()->getId(),
 			$request->getContact()->getId(),
 			$request->getSender(),
 			$request->getMessage()
-		)->status($request->getStatus())
-			->staffId($request->getStaff() ? $request->getStaff()->getId() : null)
+		)->staffId($staff ? $staff->getId() : null)
+			->internalNote($request->isInternalNote())
 			->build();
+
+		//do not change message status if message is internal note
+		if (!$request->isInternalNote()) {
+			$message->setStatus($request->getStatus());
+		}
+
 		$this->em->persist($message);
 
 		if ($request->getAttachments()) {
@@ -90,6 +115,38 @@ class TicketService
 		//ticket status
 		$message->getTicket()->setStatus($message->getStatus());
 
+		//fire event
+		if ($request->getFireEvent()) {
+			$this->eventDispatcher->dispatchEvent(
+				'ticket_message.created', new \Sellastica\Helpdesk\Event\MessageEvent($message, $request->getSender())
+			);
+		}
+
 		return $message;
+	}
+
+	/**
+	 * @param int $projectId
+	 * @param string $fullName
+	 * @param \Sellastica\Identity\Model\Email $email
+	 * @return null|\Sellastica\Helpdesk\Entity\Contact
+	 */
+	public function getOrCreateContact(
+		int $projectId,
+		string $fullName,
+		\Sellastica\Identity\Model\Email $email
+	): ?\Sellastica\Helpdesk\Entity\Contact
+	{
+		//existing contact
+		if (!$contact = $this->em->getRepository(\Sellastica\Helpdesk\Entity\Contact::class)->findOneBy([
+			'projectId' => $projectId,
+			'email' => $email->getEmail(),
+		])) {
+			//new contact
+			$contact = \Sellastica\Helpdesk\Entity\ContactBuilder::create($projectId, $fullName, $email)->build();
+			$this->em->persist($contact);
+		}
+
+		return $contact;
 	}
 }

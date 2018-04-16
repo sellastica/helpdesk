@@ -234,6 +234,18 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	}
 
 	/**
+	 * @param string $hostUrl
+	 * @return \Nette\Http\UrlScript
+	 */
+	public function getTicketUrl(string $hostUrl): \Nette\Http\UrlScript
+	{
+		$url = new \Nette\Http\UrlScript($hostUrl);
+		$url->setPath('/admin/tickets/' . $this->id);
+
+		return $url;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function toArray(): array

@@ -55,6 +55,7 @@ class TicketRelations implements \Sellastica\Entity\Relation\IEntityRelations
 	{
 		return $this->em->getRepository(Message::class)->findOneBy([
 			'ticketId' => $this->ticket->getId(),
+			'internalNote' => false,
 		], \Sellastica\Entity\Configuration::sortBy('id', false));
 	}
 
