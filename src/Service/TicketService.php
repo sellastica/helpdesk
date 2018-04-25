@@ -46,11 +46,6 @@ class TicketService
 		$this->em->persist($ticket);
 		$this->em->flush(); //retrieve ticket ID
 
-		//fire event
-		$this->eventDispatcher->dispatchEvent(
-			'ticket.created', new \Sellastica\Helpdesk\Event\TicketEvent($ticket, $request->getSender())
-		);
-
 		//message
 		$messageRequest = new CreateMessageRequest(
 			$ticket,
@@ -66,8 +61,12 @@ class TicketService
 
 		//disable event fire on message create (we do not want to send another email)
 		$messageRequest->setFireEvent(false);
+		$message = $this->createMessage($messageRequest);
 
-		$this->createMessage($messageRequest);
+		//fire event (after message is created)
+		$this->eventDispatcher->dispatchEvent(
+			'ticket.created', new \Sellastica\Helpdesk\Event\TicketEvent($ticket, $message, $request->getSender())
+		);
 
 		return $ticket;
 	}

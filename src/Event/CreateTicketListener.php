@@ -79,6 +79,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			$message->addTo($supportEmail);
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/ticket_created.latte', [
+					'message' => $event->getMessage(),
 					'ticket' => $ticket,
 					'ticket_url' => $ticket->getTicketUrl('https://crm.sellastica.com/')
 				])
@@ -92,6 +93,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			$message->addTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created.latte', [
+					'message' => $event->getMessage(),
 					'ticket' => $ticket,
 					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl())
 				])
@@ -106,6 +108,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			$message->addTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created_from_support.latte', [
+					'message' => $event->getMessage(),
 					'ticket' => $ticket,
 					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl())
 				])
