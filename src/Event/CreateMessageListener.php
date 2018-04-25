@@ -83,19 +83,27 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 					'ticket_url' => $ticket->getTicketUrl('https://crm.sellastica.com/'),
 				])
 			);
+		} elseif ($event->getMessage()->isInternalNote()) {
+			//internal note from current CRM admin user to helpdesk contact
+			$message = new \Nette\Mail\Message();
+			$message->setSubject($subject);
+			$message->setFrom($event->getMessage()->getStaff()->getEmail());
+			$message->addTo($event->getMessage()->getContact()->getEmail(), $event->getMessage()->getContact()->getFullName());
+			$message->setHtmlBody(
+				$latte->renderToString(__DIR__ . '/../UI/Emails/support/internal_note_created.latte', [
+					'message' => $event->getMessage(),
+					'ticket' => $ticket,
+					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl()),
+				])
+			);
 		} else {
 			//email from support to contact
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($supportEmail);
 			$message->addTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
-
-			$templateFile = $event->getMessage()->isInternalNote()
-				? __DIR__ . '/../UI/Emails/support/internal_note_created.latte'
-				: __DIR__ . '/../UI/Emails/contact/message_received_from_support.latte';
-
 			$message->setHtmlBody(
-				$latte->renderToString($templateFile, [
+				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/message_received_from_support.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
 					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl()),
