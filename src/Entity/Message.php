@@ -25,7 +25,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	private $message;
 	/** @var int|null @optional */
 	private $staffId;
-	/** @var \Sellastica\Helpdesk\Entity\Staff */
+	/** @var \Sellastica\Helpdesk\Entity\Staff|null */
 	private $staff;
 	/** @var \Sellastica\Helpdesk\Model\TicketStatus @optional */
 	private $status;
