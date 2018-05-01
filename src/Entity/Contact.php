@@ -14,7 +14,9 @@ class Contact extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	/** @var int @required */
 	private $projectId;
 	/** @var string @required */
-	private $fullName;
+	private $firstName;
+	/** @var string @required */
+	private $lastName;
 	/** @var \Sellastica\Identity\Model\Email @required */
 	private $email;
 
@@ -70,17 +72,33 @@ class Contact extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	/**
 	 * @return string
 	 */
-	public function getFullName(): string
+	public function getFirstName(): string
 	{
-		return $this->fullName;
+		return $this->firstName;
 	}
 
 	/**
-	 * @param string $fullName
+	 * @param string $firstName
 	 */
-	public function setFullName(string $fullName): void
+	public function setFirstName(string $firstName): void
 	{
-		$this->fullName = $fullName;
+		$this->firstName = $firstName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLastName(): string
+	{
+		return $this->lastName;
+	}
+
+	/**
+	 * @param string $lastName
+	 */
+	public function setLastName(string $lastName): void
+	{
+		$this->lastName = $lastName;
 	}
 
 	/**
@@ -91,7 +109,8 @@ class Contact extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 		return [
 			'id' => $this->id,
 			'projectId' => $this->projectId,
-			'fullName' => $this->fullName,
+			'firstName' => $this->firstName,
+			'lastName' => $this->lastName,
 			'email' => $this->email->getEmail(),
 		];
 	}

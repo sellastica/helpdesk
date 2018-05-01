@@ -14,23 +14,28 @@ class ContactBuilder implements IBuilder
 	/** @var int */
 	private $projectId;
 	/** @var string */
-	private $fullName;
+	private $firstName;
+	/** @var string */
+	private $lastName;
 	/** @var \Sellastica\Identity\Model\Email */
 	private $email;
 
 	/**
 	 * @param int $projectId
-	 * @param string $fullName
+	 * @param string $firstName
+	 * @param string $lastName
 	 * @param \Sellastica\Identity\Model\Email $email
 	 */
 	public function __construct(
 		int $projectId,
-		string $fullName,
+		string $firstName,
+		string $lastName,
 		\Sellastica\Identity\Model\Email $email
 	)
 	{
 		$this->projectId = $projectId;
-		$this->fullName = $fullName;
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
 		$this->email = $email;
 	}
 
@@ -45,9 +50,17 @@ class ContactBuilder implements IBuilder
 	/**
 	 * @return string
 	 */
-	public function getFullName(): string
+	public function getFirstName(): string
 	{
-		return $this->fullName;
+		return $this->firstName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLastName(): string
+	{
+		return $this->lastName;
 	}
 
 	/**
@@ -76,16 +89,18 @@ class ContactBuilder implements IBuilder
 
 	/**
 	 * @param int $projectId
-	 * @param string $fullName
+	 * @param string $firstName
+	 * @param string $lastName
 	 * @param \Sellastica\Identity\Model\Email $email
 	 * @return self
 	 */
 	public static function create(
 		int $projectId,
-		string $fullName,
+		string $firstName,
+		string $lastName,
 		\Sellastica\Identity\Model\Email $email
 	): self
 	{
-		return new self($projectId, $fullName, $email);
+		return new self($projectId, $firstName, $lastName, $email);
 	}
 }
