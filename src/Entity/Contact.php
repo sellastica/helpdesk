@@ -102,6 +102,14 @@ class Contact extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getFullName(): string
+	{
+		return trim($this->firstName . ' ' . $this->lastName);
+	}
+
+	/**
 	 * @return array
 	 */
 	public function toArray(): array
