@@ -75,7 +75,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
-			$message->addTo($supportEmail);
+			$message->addTo($ticket->getStaff() ? $ticket->getStaff()->getEmail() : $supportEmail);
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/message_received.latte', [
 					'message' => $event->getMessage(),
