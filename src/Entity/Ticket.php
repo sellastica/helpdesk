@@ -149,11 +149,15 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 
 	/**
 	 * @param null|\Sellastica\Helpdesk\Entity\Staff $staff
+	 * @param Staff|null $assigner
 	 */
-	public function setStaff(?Staff $staff): void
+	public function setStaff(?Staff $staff, Staff $assigner = null): void
 	{
 		$this->staff = $staff;
 		$this->staffId = $staff ? $staff->getId() : null;
+		if ($staff) {
+			$this->eventPublisher->publish(new \Sellastica\Helpdesk\Event\AssignedStaffChanged($this, $assigner));
+		}
 	}
 
 	/**

@@ -121,7 +121,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	private function send(\Nette\Mail\Message $message): void
 	{
 		try {
-			$message->setHeader('IsTransactional', true);
+			$message->setHeader('IsTransactional', 'True');
 			$this->mailer->send($message);
 		} catch (\Nette\Mail\SendException $e) {
 			$this->logger->error($e->getMessage());
