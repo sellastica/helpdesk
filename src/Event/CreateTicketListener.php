@@ -124,6 +124,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 	private function send(\Nette\Mail\Message $message): void
 	{
 		try {
+			$message->setHeader('IsTransactional', true);
 			$this->mailer->send($message);
 		} catch (\Nette\Mail\SendException $e) {
 			$this->logger->error($e->getMessage());
