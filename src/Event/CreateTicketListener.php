@@ -20,6 +20,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 
 
 	/**
+	 * @param array $mailerOptions
 	 * @param \Sellastica\Entity\EntityManager $em
 	 * @param \Sellastica\Project\Model\ProjectAccessor $projectAccessor
 	 * @param \Nette\Mail\IMailer $mailer
@@ -29,6 +30,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 	 * @param \Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
 	 */
 	public function __construct(
+		array $mailerOptions,
 		\Sellastica\Entity\EntityManager $em,
 		\Sellastica\Project\Model\ProjectAccessor $projectAccessor,
 		\Nette\Mail\IMailer $mailer,
@@ -44,9 +46,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 		$this->container = $container;
 		$this->latteFactory = $latteFactory;
 		$this->logger = $logger->channel('helpdesk');
-		$this->mailer = new \Sellastica\SmtpMailer\SmtpMailer([
-			'mode' => $this->container->parameters['mailer']['mode'],
-		]);
+		$this->mailer = new \Sellastica\SmtpMailer\SmtpMailer($mailerOptions);
 	}
 
 	/**

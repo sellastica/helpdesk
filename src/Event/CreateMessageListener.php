@@ -20,15 +20,16 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 
 
 	/**
+	 * @param array $mailerOptions
 	 * @param \Sellastica\Entity\EntityManager $em
 	 * @param \Sellastica\Project\Model\ProjectAccessor $projectAccessor
 	 * @param \Nette\Localization\ITranslator $translator
 	 * @param \Nette\DI\Container $container
 	 * @param \Sellastica\Monolog\Logger $logger
 	 * @param \Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
-	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(
+		array $mailerOptions,
 		\Sellastica\Entity\EntityManager $em,
 		\Sellastica\Project\Model\ProjectAccessor $projectAccessor,
 		\Nette\Localization\ITranslator $translator,
@@ -43,9 +44,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 		$this->container = $container;
 		$this->latteFactory = $latteFactory;
 		$this->logger = $logger->channel('helpdesk');
-		$this->mailer = new \Sellastica\SmtpMailer\SmtpMailer([
-			'mode' => $this->container->parameters['mailer']['mode'],
-		]);
+		$this->mailer = new \Sellastica\SmtpMailer\SmtpMailer($mailerOptions);
 	}
 
 	/**
