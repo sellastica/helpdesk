@@ -67,6 +67,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 		$ticket = $event->getTicket();
 		$sender = $event->getSender();
 		$supportEmail = $this->container->parameters['helpdesk']['email'];
+		$supportName = $this->translator->translate('core.helpdesk.helpdesk_name');
 		$latte = $this->latteFactory->create();
 		$latte->setTempDirectory(TEMP_DIR);
 		$subject = $ticket->getNumber() . ': ' . \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
@@ -75,9 +76,9 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			//email from contact to support
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail);
+			$message->setFrom($supportEmail, $supportName);
 			$message->addReplyTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
-			$message->addTo($supportEmail);
+			$message->addTo($supportEmail, $supportName);
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/ticket_created.latte', [
 					'message' => $event->getMessage(),
@@ -90,7 +91,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			//email from support to contact (we received the message....)
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail);
+			$message->setFrom($supportEmail, $supportName);
 			$message->addTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created.latte', [
@@ -105,7 +106,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			//email from support to contact
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail);
+			$message->setFrom($supportEmail, $supportName);
 			$message->addTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created_from_support.latte', [

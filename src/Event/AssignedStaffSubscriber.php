@@ -62,7 +62,7 @@ class AssignedStaffSubscriber implements \Sellastica\Entity\Event\IDomainEventSu
 			$subject = $this->translator->translate('core.helpdesk.email_assigned_to_you_from_assigner', [
 				'ticket' => $ticket->getNumber(),
 				'subject' => \Sellastica\Utils\Strings::firstUpper($ticket->getSubject()),
-				'staff' => $event->getAssigner()
+				'assigner' => $event->getAssigner()
 			]);
 		} else {
 			$subject = $this->translator->translate('core.helpdesk.email_assigned_to_you', [

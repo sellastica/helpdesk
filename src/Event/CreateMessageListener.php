@@ -65,6 +65,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 		$ticket = $event->getMessage()->getTicket();
 		$sender = $event->getSender();
 		$supportEmail = $this->container->parameters['helpdesk']['email'];
+		$supportName = $this->translator->translate('core.helpdesk.helpdesk_name');
 		$latte = $this->latteFactory->create();
 		$latte->setTempDirectory(TEMP_DIR);
 		$subject = 'Re: ' . $ticket->getNumber() . ': ' . \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
@@ -73,9 +74,14 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			//email from contact to support
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail);
+			$message->setFrom($supportEmail, $supportName);
 			$message->addReplyTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
-			$message->addTo($ticket->getStaff() ? $ticket->getStaff()->getEmail() : $supportEmail);
+			if ($ticket->getStaff()) {
+				$message->addTo($ticket->getStaff()->getEmail(), $ticket->getStaff()->getFullName());
+			} else {
+				$message->addTo($supportEmail, $supportName);
+			}
+
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/message_received.latte', [
 					'message' => $event->getMessage(),
@@ -87,7 +93,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			//internal note from current CRM admin user to helpdesk contact
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail);
+			$message->setFrom($supportEmail, $supportName);
 			$message->addReplyTo($event->getMessage()->getStaff()->getEmail());
 			$message->addTo($event->getMessage()->getContact()->getEmail(), $event->getMessage()->getContact()->getFullName());
 			$message->setHtmlBody(
@@ -101,7 +107,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			//email from support to contact
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail);
+			$message->setFrom($supportEmail, $supportName);
 			$message->addTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/message_received_from_support.latte', [
