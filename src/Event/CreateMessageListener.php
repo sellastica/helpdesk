@@ -73,7 +73,8 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			//email from contact to support
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
+			$message->setFrom($supportEmail);
+			$message->addReplyTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
 			$message->addTo($ticket->getStaff() ? $ticket->getStaff()->getEmail() : $supportEmail);
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/message_received.latte', [
@@ -86,7 +87,8 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			//internal note from current CRM admin user to helpdesk contact
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($event->getMessage()->getStaff()->getEmail());
+			$message->setFrom($supportEmail);
+			$message->addReplyTo($event->getMessage()->getStaff()->getEmail());
 			$message->addTo($event->getMessage()->getContact()->getEmail(), $event->getMessage()->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/internal_note_created.latte', [
@@ -119,6 +121,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	private function send(\Nette\Mail\Message $message): void
 	{
 		try {
+			$message->setHeader('IsTransactional', true);
 			$this->mailer->send($message);
 		} catch (\Nette\Mail\SendException $e) {
 			$this->logger->error($e->getMessage());

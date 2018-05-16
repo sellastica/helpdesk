@@ -75,7 +75,8 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			//email from contact to support
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
+			$message->setFrom($supportEmail);
+			$message->addReplyTo($ticket->getContact()->getEmail(), $ticket->getContact()->getFullName());
 			$message->addTo($supportEmail);
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/ticket_created.latte', [
