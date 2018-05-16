@@ -62,6 +62,7 @@ class TicketService
 		//disable event fire on message create (we do not want to send another email)
 		$messageRequest->setFireEvent(false);
 		$message = $this->createMessage($messageRequest);
+		$this->em->flush();
 
 		//fire event (after message is created)
 		$this->eventDispatcher->dispatchEvent(

@@ -5,6 +5,7 @@
 {block content}
 	<p>Dobrý den,</p>
 	<p>máte novou odpověď na ticket s číslem <strong>{$ticket->getNumber()}</strong> od technické podpory.</p>
+	<p>Detaily naleznete zde: <a href="{$ticket_url}">{$ticket_url}</a></p>
 
 	<blockquote>
 		{$message->getMessage()|noescape}

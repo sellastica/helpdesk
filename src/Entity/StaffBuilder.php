@@ -18,24 +18,29 @@ class StaffBuilder implements IBuilder
 	/** @var \Sellastica\Identity\Model\Email */
 	private $email;
 	/** @var int */
+	private $contactId;
+	/** @var int */
 	private $crmUserId;
 
 	/**
 	 * @param string $firstName
 	 * @param string $lastName
 	 * @param \Sellastica\Identity\Model\Email $email
+	 * @param int $contactId
 	 * @param int $crmUserId
 	 */
 	public function __construct(
 		string $firstName,
 		string $lastName,
 		\Sellastica\Identity\Model\Email $email,
+		int $contactId,
 		int $crmUserId
 	)
 	{
 		$this->firstName = $firstName;
 		$this->lastName = $lastName;
 		$this->email = $email;
+		$this->contactId = $contactId;
 		$this->crmUserId = $crmUserId;
 	}
 
@@ -66,6 +71,14 @@ class StaffBuilder implements IBuilder
 	/**
 	 * @return int
 	 */
+	public function getContactId(): int
+	{
+		return $this->contactId;
+	}
+
+	/**
+	 * @return int
+	 */
 	public function getCrmUserId(): int
 	{
 		return $this->crmUserId;
@@ -91,6 +104,7 @@ class StaffBuilder implements IBuilder
 	 * @param string $firstName
 	 * @param string $lastName
 	 * @param \Sellastica\Identity\Model\Email $email
+	 * @param int $contactId
 	 * @param int $crmUserId
 	 * @return self
 	 */
@@ -98,9 +112,10 @@ class StaffBuilder implements IBuilder
 		string $firstName,
 		string $lastName,
 		\Sellastica\Identity\Model\Email $email,
+		int $contactId,
 		int $crmUserId
 	): self
 	{
-		return new self($firstName, $lastName, $email, $crmUserId);
+		return new self($firstName, $lastName, $email, $contactId, $crmUserId);
 	}
 }
