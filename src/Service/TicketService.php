@@ -126,13 +126,15 @@ class TicketService
 
 	/**
 	 * @param int $projectId
-	 * @param string $fullName
+	 * @param string $firstName
+	 * @param string $lastName
 	 * @param \Sellastica\Identity\Model\Email $email
 	 * @return null|\Sellastica\Helpdesk\Entity\Contact
 	 */
 	public function getOrCreateContact(
 		int $projectId,
-		string $fullName,
+		string $firstName,
+		string $lastName,
 		\Sellastica\Identity\Model\Email $email
 	): ?\Sellastica\Helpdesk\Entity\Contact
 	{
@@ -142,7 +144,7 @@ class TicketService
 			'email' => $email->getEmail(),
 		])) {
 			//new contact
-			$contact = \Sellastica\Helpdesk\Entity\ContactBuilder::create($projectId, $fullName, $email)->build();
+			$contact = \Sellastica\Helpdesk\Entity\ContactBuilder::create($projectId, $firstName, $lastName, $email)->build();
 			$this->em->persist($contact);
 		}
 
