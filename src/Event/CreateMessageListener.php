@@ -64,25 +64,26 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	{
 		$ticket = $event->getMessage()->getTicket();
 		$sender = $event->getSender();
-		$supportEmail = $this->container->parameters['helpdesk']['email'];
-		$supportName = $this->translator->translate('core.helpdesk.helpdesk_name');
+		$noReplyEmail = $this->container->parameters['helpdesk']['noreply_email'];
+		$noReplyName = $this->translator->translate('core.helpdesk.helpdesk_name');
+		$fallbackEmail = $this->container->parameters['helpdesk']['fallback_email'];
+		$subject = 'Re: ' . $ticket->getNumber() . ': ' . \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
+
 		$latte = $this->latteFactory->create();
 		$latte->setTempDirectory(TEMP_DIR);
-		$subject = 'Re: ' . $ticket->getNumber() . ': ' . \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
 
 		if ($sender->isContact()) {
 			//email from contact to support
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail, $supportName);
-			$message->addReplyTo(
-				$ticket->getContact()->getContact()->getEmail()->getEmail(),
-				$ticket->getContact()->getContact()->getFullName()
-			);
+			$message->setFrom($noReplyEmail, $noReplyName);
+			$message->addReplyTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
 			if ($ticket->getStaff()) {
 				$message->addTo($ticket->getStaff()->getEmail(), $ticket->getStaff()->getFullName());
+			} elseif ($manager = $this->getSupportManager()) {
+				$message->addTo($manager->getEmail(), $manager->getFullName());
 			} else {
-				$message->addTo($supportEmail, $supportName);
+				$message->addTo($fallbackEmail);
 			}
 
 			$message->setHtmlBody(
@@ -96,12 +97,9 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			//internal note from current CRM admin user to helpdesk contact
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail, $supportName);
+			$message->setFrom($noReplyEmail, $noReplyName);
 			$message->addReplyTo($event->getMessage()->getStaff()->getEmail());
-			$message->addTo(
-				$event->getMessage()->getContact()->getContact()->getEmail()->getEmail(),
-				$event->getMessage()->getContact()->getContact()->getFullName()
-			);
+			$message->addTo($event->getMessage()->getContact()->getContact()->getEmail(), $event->getMessage()->getContact()->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/internal_note_created.latte', [
 					'message' => $event->getMessage(),
@@ -113,11 +111,8 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			//email from support to contact
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail, $supportName);
-			$message->addTo(
-				$ticket->getContact()->getContact()->getEmail()->getEmail(),
-				$ticket->getContact()->getContact()->getFullName()
-			);
+			$message->setFrom($noReplyEmail, $noReplyName);
+			$message->addTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/message_received_from_support.latte', [
 					'message' => $event->getMessage(),
@@ -128,6 +123,15 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 		}
 
 		$this->send($message);
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Entity\Staff|null
+	 */
+	private function getSupportManager(): ?\Sellastica\Helpdesk\Entity\Staff
+	{
+		return $this->em->getRepository(\Sellastica\Helpdesk\Entity\Staff::class)
+			->findOneBy(['manager' => 1]);
 	}
 
 	/**

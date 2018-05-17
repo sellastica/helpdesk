@@ -53,8 +53,8 @@ class AssignedStaffSubscriber implements \Sellastica\Entity\Event\IDomainEventSu
 		}
 
 		$ticket = $event->getTicket();
-		$supportEmail = $this->container->parameters['helpdesk']['email'];
-		$supportName = $this->translator->translate('core.helpdesk.helpdesk_name');
+		$noReplyEmail = $this->container->parameters['helpdesk']['noreply_email'];
+		$noReplyName = $this->translator->translate('core.helpdesk.helpdesk_name');
 		$latte = $this->latteFactory->create();
 		$latte->setTempDirectory(TEMP_DIR);
 
@@ -74,7 +74,7 @@ class AssignedStaffSubscriber implements \Sellastica\Entity\Event\IDomainEventSu
 		//email from staff to another staff
 		$message = new \Nette\Mail\Message();
 		$message->setSubject($subject);
-		$message->setFrom($supportEmail, $supportName);
+		$message->setFrom($noReplyEmail, $noReplyName);
 		if ($event->getAssigner()) {
 			$message->addReplyTo($event->getAssigner()->getEmail(), $event->getAssigner()->getFullName());
 		}

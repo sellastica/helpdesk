@@ -66,27 +66,31 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 	{
 		$ticket = $event->getTicket();
 		$sender = $event->getSender();
-		$supportEmail = $this->container->parameters['helpdesk']['email'];
-		$supportName = $this->translator->translate('core.helpdesk.helpdesk_name');
+		$noReplyEmail = $this->container->parameters['helpdesk']['noreply_email'];
+		$noReplyName = $this->translator->translate('core.helpdesk.helpdesk_name');
+		$fallbackEmail = $this->container->parameters['helpdesk']['fallback_email'];
+		$subject = $ticket->getNumber() . ': ' . \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
+
 		$latte = $this->latteFactory->create();
 		$latte->setTempDirectory(TEMP_DIR);
-		$subject = $ticket->getNumber() . ': ' . \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
 
 		if ($sender->isContact()) {
 			//email from contact to support
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail, $supportName);
-			$message->addReplyTo(
-				$ticket->getContact()->getContact()->getEmail()->getEmail(),
-				$ticket->getContact()->getContact()->getFullName()
-			);
-			$message->addTo($supportEmail, $supportName);
+			$message->setFrom($noReplyEmail, $noReplyName);
+			$message->addReplyTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
+			if ($manager = $this->getSupportManager()) {
+				$message->addTo($manager->getEmail(), $manager->getFullName());
+			} else {
+				$message->addTo($fallbackEmail);
+			}
+
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/ticket_created.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl('https://crm.sellastica.com/')
+					'ticket_url' => $ticket->getTicketUrl('https://crm.sellastica.com/'),
 				])
 			);
 			$this->send($message);
@@ -94,16 +98,13 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			//email from support to contact (we received the message....)
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail, $supportName);
-			$message->addTo(
-				$ticket->getContact()->getContact()->getEmail()->getEmail(),
-				$ticket->getContact()->getContact()->getFullName()
-			);
+			$message->setFrom($noReplyEmail, $noReplyName);
+			$message->addTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl())
+					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl()),
 				])
 			);
 			$this->send($message);
@@ -112,20 +113,26 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			//email from support to contact
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
-			$message->setFrom($supportEmail, $supportName);
-			$message->addTo(
-				$ticket->getContact()->getContact()->getEmail()->getEmail(),
-				$ticket->getContact()->getContact()->getFullName()
-			);
+			$message->setFrom($noReplyEmail, $noReplyName);
+			$message->addTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created_from_support.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl())
+					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl()),
 				])
 			);
 			$this->send($message);
 		}
+	}
+
+	/**
+	 * @return \Sellastica\Helpdesk\Entity\Staff|null
+	 */
+	private function getSupportManager(): ?\Sellastica\Helpdesk\Entity\Staff
+	{
+		return $this->em->getRepository(\Sellastica\Helpdesk\Entity\Staff::class)
+			->findOneBy(['manager' => 1]);
 	}
 
 	/**

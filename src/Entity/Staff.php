@@ -19,6 +19,8 @@ class Staff extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellast
 	private $contactId;
 	/** @var int @required */
 	private $crmUserId;
+	/** @var bool @optional */
+	private $manager;
 
 
 	/**
@@ -110,6 +112,22 @@ class Staff extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellast
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isManager(): bool
+	{
+		return $this->manager;
+	}
+
+	/**
+	 * @param bool $manager
+	 */
+	public function setManager(bool $manager): void
+	{
+		$this->manager = $manager;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function toArray(): array
@@ -121,6 +139,7 @@ class Staff extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellast
 			'email' => $this->email->getEmail(),
 			'contactId' => $this->contactId,
 			'crmUserId' => $this->crmUserId,
+			'manager' => $this->manager,
 		];
 	}
 }

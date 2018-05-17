@@ -21,6 +21,8 @@ class StaffBuilder implements IBuilder
 	private $contactId;
 	/** @var int */
 	private $crmUserId;
+	/** @var bool */
+	private $manager;
 
 	/**
 	 * @param string $firstName
@@ -82,6 +84,24 @@ class StaffBuilder implements IBuilder
 	public function getCrmUserId(): int
 	{
 		return $this->crmUserId;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getManager(): bool
+	{
+		return $this->manager;
+	}
+
+	/**
+	 * @param bool $manager
+	 * @return $this
+	 */
+	public function manager(bool $manager)
+	{
+		$this->manager = $manager;
+		return $this;
 	}
 
 	/**
