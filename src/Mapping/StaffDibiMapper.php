@@ -2,7 +2,6 @@
 namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\DibiMapper;
-use Sellastica\Helpdesk\Entity\Staff;
 
 /**
  * @see \Sellastica\Helpdesk\Entity\Staff

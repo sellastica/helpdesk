@@ -4,7 +4,6 @@ namespace Sellastica\Helpdesk\Mapping;
 use Sellastica\Entity\Entity\EntityCollection;
 use Sellastica\Entity\IBuilder;
 use Sellastica\Entity\Mapping\Dao;
-use Sellastica\Helpdesk\Entity\Ticket;
 use Sellastica\Helpdesk\Entity\TicketBuilder;
 use Sellastica\Helpdesk\Entity\TicketCollection;
 

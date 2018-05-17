@@ -3,7 +3,6 @@ namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\RepositoryProxy;
 use Sellastica\Helpdesk\Entity\IMessageAttachmentRepository;
-use Sellastica\Helpdesk\Entity\MessageAttachment;
 
 /**
  * @method MessageAttachmentRepository getRepository()

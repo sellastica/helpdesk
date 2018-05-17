@@ -17,7 +17,7 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	private $project;
 	/** @var int @required */
 	private $contactId;
-	/** @var \Sellastica\Helpdesk\Entity\Contact */
+	/** @var \Sellastica\Project\Entity\Contact */
 	private $contact;
 	/** @var string @required */
 	private $subject;
@@ -91,9 +91,9 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	}
 
 	/**
-	 * @return \Sellastica\Helpdesk\Entity\Contact
+	 * @return \Sellastica\Project\Entity\Contact
 	 */
-	public function getContact(): \Sellastica\Helpdesk\Entity\Contact
+	public function getContact(): \Sellastica\Project\Entity\Contact
 	{
 		if (!isset($this->contact)) {
 			$this->contact = $this->relationService->getContact();
@@ -103,9 +103,9 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	}
 
 	/**
-	 * @param \Sellastica\Helpdesk\Entity\Contact $contact
+	 * @param \Sellastica\Project\Entity\Contact $contact
 	 */
-	public function setContact(\Sellastica\Helpdesk\Entity\Contact $contact): void
+	public function setContact(\Sellastica\Project\Entity\Contact $contact): void
 	{
 		$this->contact = $contact;
 		$this->contactId = $contact ? $contact->getId() : null;

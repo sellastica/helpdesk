@@ -3,7 +3,6 @@ namespace Sellastica\Helpdesk\Mapping;
 
 use Sellastica\Entity\Mapping\Repository;
 use Sellastica\Helpdesk\Entity\IMessageRepository;
-use Sellastica\Helpdesk\Entity\Message;
 
 /**
  * @property \Sellastica\Helpdesk\Mapping\MessageDao $dao

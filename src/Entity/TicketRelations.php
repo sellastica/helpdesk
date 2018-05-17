@@ -60,10 +60,11 @@ class TicketRelations implements \Sellastica\Entity\Relation\IEntityRelations
 	}
 
 	/**
-	 * @return \Sellastica\Helpdesk\Entity\Contact
+	 * @return \Sellastica\Project\Entity\Contact
 	 */
-	public function getContact(): \Sellastica\Helpdesk\Entity\Contact
+	public function getContact(): \Sellastica\Project\Entity\Contact
 	{
-		return $this->em->getRepository(Contact::class)->find($this->ticket->getContactId());
+		return $this->em->getRepository(\Sellastica\Project\Entity\Contact::class)
+			->find($this->ticket->getContactId());
 	}
 }

@@ -4,7 +4,6 @@ namespace Sellastica\Helpdesk\Mapping;
 use Sellastica\Entity\Entity\EntityCollection;
 use Sellastica\Entity\IBuilder;
 use Sellastica\Entity\Mapping\Dao;
-use Sellastica\Helpdesk\Entity\MessageAttachment;
 use Sellastica\Helpdesk\Entity\MessageAttachmentBuilder;
 use Sellastica\Helpdesk\Entity\MessageAttachmentCollection;
 

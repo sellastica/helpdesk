@@ -13,7 +13,7 @@ class CreateMessageRequest
 	private $staff;
 	/** @var \Sellastica\Helpdesk\Entity\Ticket */
 	private $ticket;
-	/** @var \Sellastica\Helpdesk\Entity\Contact */
+	/** @var \Sellastica\Project\Entity\Contact */
 	private $contact;
 	/** @var \Sellastica\Helpdesk\Model\MessageSender */
 	private $sender;
@@ -25,14 +25,14 @@ class CreateMessageRequest
 
 	/**
 	 * @param \Sellastica\Helpdesk\Entity\Ticket $ticket
-	 * @param \Sellastica\Helpdesk\Entity\Contact $contact
+	 * @param \Sellastica\Project\Entity\Contact $contact
 	 * @param string $message
 	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
 	 * @param \Sellastica\Helpdesk\Model\MessageSender $sender
 	 */
 	public function __construct(
 		\Sellastica\Helpdesk\Entity\Ticket $ticket,
-		\Sellastica\Helpdesk\Entity\Contact $contact,
+		\Sellastica\Project\Entity\Contact $contact,
 		string $message,
 		\Sellastica\Helpdesk\Model\TicketStatus $status,
 		\Sellastica\Helpdesk\Model\MessageSender $sender
@@ -54,9 +54,9 @@ class CreateMessageRequest
 	}
 
 	/**
-	 * @return \Sellastica\Helpdesk\Entity\Contact
+	 * @return \Sellastica\Project\Entity\Contact
 	 */
-	public function getContact(): \Sellastica\Helpdesk\Entity\Contact
+	public function getContact(): \Sellastica\Project\Entity\Contact
 	{
 		return $this->contact;
 	}
