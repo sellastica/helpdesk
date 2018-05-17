@@ -77,7 +77,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($noReplyEmail, $noReplyName);
-			$message->addReplyTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
+			$message->addReplyTo($ticket->getContact()->getContact()->getEmail()->getEmail(), $ticket->getContact()->getContact()->getFullName());
 			if ($ticket->getStaff()) {
 				$message->addTo($ticket->getStaff()->getEmail(), $ticket->getStaff()->getFullName());
 			} elseif ($manager = $this->getSupportManager()) {
@@ -99,7 +99,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			$message->setSubject($subject);
 			$message->setFrom($noReplyEmail, $noReplyName);
 			$message->addReplyTo($event->getMessage()->getStaff()->getEmail());
-			$message->addTo($event->getMessage()->getContact()->getContact()->getEmail(), $event->getMessage()->getContact()->getContact()->getFullName());
+			$message->addTo($event->getMessage()->getContact()->getContact()->getEmail()->getEmail(), $event->getMessage()->getContact()->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/internal_note_created.latte', [
 					'message' => $event->getMessage(),
@@ -112,7 +112,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($noReplyEmail, $noReplyName);
-			$message->addTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
+			$message->addTo($ticket->getContact()->getContact()->getEmail()->getEmail(), $ticket->getContact()->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/message_received_from_support.latte', [
 					'message' => $event->getMessage(),

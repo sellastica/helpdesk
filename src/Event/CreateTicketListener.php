@@ -79,7 +79,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($noReplyEmail, $noReplyName);
-			$message->addReplyTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
+			$message->addReplyTo($ticket->getContact()->getContact()->getEmail()->getEmail(), $ticket->getContact()->getContact()->getFullName());
 			if ($manager = $this->getSupportManager()) {
 				$message->addTo($manager->getEmail(), $manager->getFullName());
 			} else {
@@ -99,7 +99,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($noReplyEmail, $noReplyName);
-			$message->addTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
+			$message->addTo($ticket->getContact()->getContact()->getEmail()->getEmail(), $ticket->getContact()->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created.latte', [
 					'message' => $event->getMessage(),
@@ -114,7 +114,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($noReplyEmail, $noReplyName);
-			$message->addTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
+			$message->addTo($ticket->getContact()->getContact()->getEmail()->getEmail(), $ticket->getContact()->getContact()->getFullName());
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created_from_support.latte', [
 					'message' => $event->getMessage(),
