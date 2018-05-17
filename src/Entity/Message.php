@@ -17,7 +17,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	private $ticket;
 	/** @var int @required */
 	private $contactId;
-	/** @var \Sellastica\Project\Entity\Contact */
+	/** @var \Sellastica\Project\Entity\ProjectContact */
 	private $contact;
 	/** @var \Sellastica\Helpdesk\Model\MessageSender @required */
 	private $sender;
@@ -197,9 +197,9 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	}
 
 	/**
-	 * @return \Sellastica\Project\Entity\Contact
+	 * @return \Sellastica\Project\Entity\ProjectContact
 	 */
-	public function getContact(): \Sellastica\Project\Entity\Contact
+	public function getContact(): \Sellastica\Project\Entity\ProjectContact
 	{
 		if (!isset($this->contact)) {
 			$this->contact = $this->relationService->getContact();
@@ -209,9 +209,9 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	}
 
 	/**
-	 * @param \Sellastica\Project\Entity\Contact $contact
+	 * @param \Sellastica\Project\Entity\ProjectContact $contact
 	 */
-	public function setContact(\Sellastica\Project\Entity\Contact $contact): void
+	public function setContact(\Sellastica\Project\Entity\ProjectContact $contact): void
 	{
 		$this->contact = $contact;
 		$this->contactId = $contact ? $contact->getId() : null;

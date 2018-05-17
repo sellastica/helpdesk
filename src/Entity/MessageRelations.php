@@ -49,11 +49,11 @@ class MessageRelations implements \Sellastica\Entity\Relation\IEntityRelations
 	}
 
 	/**
-	 * @return null|\Sellastica\Project\Entity\Contact
+	 * @return null|\Sellastica\Project\Entity\ProjectContact
 	 */
-	public function getContact(): ?\Sellastica\Project\Entity\Contact
+	public function getContact(): ?\Sellastica\Project\Entity\ProjectContact
 	{
-		return $this->em->getRepository(\Sellastica\Project\Entity\Contact::class)
+		return $this->em->getRepository(\Sellastica\Project\Entity\ProjectContact::class)
 			->find($this->message->getContactId());
 	}
 }

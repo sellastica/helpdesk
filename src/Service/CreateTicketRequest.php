@@ -19,7 +19,7 @@ class CreateTicketRequest
 	private $attachments = [];
 	/** @var \Sellastica\Helpdesk\Entity\Staff|null */
 	private $staff;
-	/** @var \Sellastica\Project\Entity\Contact */
+	/** @var \Sellastica\Project\Entity\ProjectContact */
 	private $contact;
 	/** @var \Sellastica\Helpdesk\Model\MessageSender */
 	private $sender;
@@ -28,7 +28,7 @@ class CreateTicketRequest
 	/**
 	 * @param string $subject
 	 * @param string $message
-	 * @param \Sellastica\Project\Entity\Contact $contact
+	 * @param \Sellastica\Project\Entity\ProjectContact $contact
 	 * @param \Sellastica\Helpdesk\Model\TicketStatus $status
 	 * @param \Sellastica\Helpdesk\Model\TicketType $type
 	 * @param \Sellastica\Helpdesk\Model\MessageSender $sender
@@ -36,7 +36,7 @@ class CreateTicketRequest
 	public function __construct(
 		string $subject,
 		string $message,
-		\Sellastica\Project\Entity\Contact $contact,
+		\Sellastica\Project\Entity\ProjectContact $contact,
 		\Sellastica\Helpdesk\Model\TicketStatus $status,
 		\Sellastica\Helpdesk\Model\TicketType $type,
 		\Sellastica\Helpdesk\Model\MessageSender $sender
@@ -155,9 +155,9 @@ class CreateTicketRequest
 	}
 
 	/**
-	 * @return \Sellastica\Project\Entity\Contact
+	 * @return \Sellastica\Project\Entity\ProjectContact
 	 */
-	public function getContact(): \Sellastica\Project\Entity\Contact
+	public function getContact(): \Sellastica\Project\Entity\ProjectContact
 	{
 		return $this->contact;
 	}
