@@ -96,7 +96,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 		if ($this->sender->isStaff() && $this->getStaff()) {
 			return $this->getStaff()->getFullName();
 		} elseif ($this->sender->isContact() && $this->getContact()) {
-			return $this->getContact()->getFullName();
+			return $this->getContact()->getContact()->getFullName();
 		}
 
 		return null;
@@ -110,7 +110,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 		if ($this->sender->isStaff() && $this->getStaff()) {
 			return $this->getStaff()->getEmail();
 		} elseif ($this->sender->isContact() && $this->getContact()) {
-			return $this->getContact()->getEmail();
+			return $this->getContact()->getContact()->getEmail();
 		}
 
 		return null;
@@ -122,7 +122,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	public function getRecipientName(): ?string
 	{
 		if ($this->sender->isStaff() && $this->getContact()) {
-			return $this->getContact()->getFullName();
+			return $this->getContact()->getContact()->getFullName();
 		} elseif ($this->sender->isContact() && $this->getStaff()) {
 			return $this->getStaff()->getFullName();
 		}
@@ -136,7 +136,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	public function getRecipientEmail(): string
 	{
 		if ($this->sender->isStaff() && $this->getContact()) {
-			return $this->getContact()->getEmail();
+			return $this->getContact()->getContact()->getEmail();
 		} elseif ($this->sender->isContact() && $this->getStaff()) {
 			return $this->getStaff()->getEmail();
 		}
