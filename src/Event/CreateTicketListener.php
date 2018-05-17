@@ -77,7 +77,10 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($supportEmail, $supportName);
-			$message->addReplyTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
+			$message->addReplyTo(
+				$ticket->getContact()->getContact()->getEmail()->getEmail(),
+				$ticket->getContact()->getContact()->getFullName()
+			);
 			$message->addTo($supportEmail, $supportName);
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/ticket_created.latte', [
@@ -92,7 +95,10 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($supportEmail, $supportName);
-			$message->addTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
+			$message->addTo(
+				$ticket->getContact()->getContact()->getEmail()->getEmail(),
+				$ticket->getContact()->getContact()->getFullName()
+			);
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created.latte', [
 					'message' => $event->getMessage(),
@@ -107,7 +113,10 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 			$message = new \Nette\Mail\Message();
 			$message->setSubject($subject);
 			$message->setFrom($supportEmail, $supportName);
-			$message->addTo($ticket->getContact()->getContact()->getEmail(), $ticket->getContact()->getContact()->getFullName());
+			$message->addTo(
+				$ticket->getContact()->getContact()->getEmail()->getEmail(),
+				$ticket->getContact()->getContact()->getFullName()
+			);
 			$message->setHtmlBody(
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created_from_support.latte', [
 					'message' => $event->getMessage(),
