@@ -5,7 +5,7 @@
 {block content}
 	<p>
 		{if $assigner}{$assigner->getFullName()}{else}Někdo{/if} vám přiřadil ticket <strong>{$ticket->getNumber()}</strong>
-		od zákazníka {$ticket->getContact()->getFullName()} z <strong>{$ticket->getProject()->getShortTitle()}</strong>.
+		od zákazníka {$ticket->getContact()->getContact()->getFullName()} z <strong>{$ticket->getProject()->getShortTitle()}</strong>.
 	</p>
 
 	{if $ticket->getLastMessage()}
