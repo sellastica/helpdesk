@@ -83,7 +83,7 @@ class AssignedStaffSubscriber implements \Sellastica\Entity\Event\IDomainEventSu
 		$message->setHtmlBody(
 			$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_assigned.latte', [
 				'ticket' => $ticket,
-				'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl()),
+				'ticket_url' => $ticket->getTicketUrl('https://crm.sellastica.com/'),
 				'assigner' => $event->getAssigner(),
 			])
 		);
