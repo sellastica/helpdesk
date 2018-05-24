@@ -68,6 +68,10 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 		$noReplyName = $this->translator->translate('core.helpdesk.helpdesk_name');
 		$fallbackEmail = $this->container->parameters['helpdesk']['fallback_email'];
 		$subject = 'Re: ' . $ticket->getNumber() . ': ' . \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
+		/** @var \Sellastica\Project\Entity\Project $crmProject */
+		$crmProject = $this->em->getRepository(\Sellastica\Project\Entity\Project::class)->find(
+			$this->container->parameters['crm']['project_id']
+		);
 
 		$latte = $this->latteFactory->create();
 		$latte->setTempDirectory(TEMP_DIR);
@@ -90,7 +94,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/message_received.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl('https://crm.sellastica.com/'),
+					'ticket_url' => $ticket->getTicketUrl($crmProject->getDefaultUrl()->getAbsoluteUrl()),
 				])
 			);
 		} elseif ($event->getMessage()->isInternalNote()) {
@@ -104,7 +108,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/internal_note_created.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl()),
+					'ticket_url' => $ticket->getTicketUrl($crmProject->getDefaultUrl()->getAbsoluteUrl()),
 				])
 			);
 		} else {

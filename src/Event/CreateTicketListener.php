@@ -70,6 +70,10 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 		$noReplyName = $this->translator->translate('core.helpdesk.helpdesk_name');
 		$fallbackEmail = $this->container->parameters['helpdesk']['fallback_email'];
 		$subject = $ticket->getNumber() . ': ' . \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
+		/** @var \Sellastica\Project\Entity\Project $crmProject */
+		$crmProject = $this->em->getRepository(\Sellastica\Project\Entity\Project::class)->find(
+			$this->container->parameters['crm']['project_id']
+		);
 
 		$latte = $this->latteFactory->create();
 		$latte->setTempDirectory(TEMP_DIR);
@@ -90,7 +94,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 				$latte->renderToString(__DIR__ . '/../UI/Emails/support/ticket_created.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl('https://crm.sellastica.com/'),
+					'ticket_url' => $ticket->getTicketUrl($crmProject->getDefaultUrl()->getAbsoluteUrl()),
 				])
 			);
 			$this->send($message);
