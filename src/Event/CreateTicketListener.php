@@ -74,6 +74,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 		$crmProject = $this->em->getRepository(\Sellastica\Project\Entity\Project::class)->find(
 			$this->container->parameters['crm']['project_id']
 		);
+		$allStaff = $this->em->getRepository(\Sellastica\Helpdesk\Entity\Staff::class)->findAll();
 
 		$latte = $this->latteFactory->create();
 		$latte->setTempDirectory(TEMP_DIR);
@@ -95,6 +96,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
 					'ticket_url' => $ticket->getTicketUrl($crmProject->getDefaultUrl()->getAbsoluteUrl()),
+					'all_staff' => $allStaff,
 				])
 			);
 			$this->send($message);

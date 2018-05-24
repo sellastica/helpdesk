@@ -1,0 +1,12 @@
+<div class="support-footer">
+	<span class="status">
+		<a href="{$ticket_url}?do=changeStatus&status=pending">Do odeslaných</a>
+		<a href="{$ticket_url}?do=changeStatus&status=closed">Zavřít</a>
+	</span>
+
+	<span class="staff">
+		{foreach $all_staff as $staff}
+			<a href="{$ticket_url}?do=changeStaff&staffId={$staff->getId()}">{$staff->getFullName()}</a>
+		{/foreach}
+	</span>
+</div>
