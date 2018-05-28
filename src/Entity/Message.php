@@ -68,7 +68,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 		if (!isset($this->ticket)) {
 			$this->ticket = $this->relationService->getTicket();
 		}
-		
+
 		return $this->ticket;
 	}
 
@@ -150,6 +150,23 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 	public function getMessage(): string
 	{
 		return $this->message;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getMessageWithActiveLinks(): string
+	{
+		// The Regular Expression filter
+		$regexp = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+
+		if (strpos($this->message, '<a ')) {
+			return $this->message;
+		} elseif (preg_match($regexp, $this->message, $url)) {
+			return preg_replace($regexp, "<a href=\"{$url[0]}\">{$url[0]}</a>", $this->message);
+		} else {
+			return $this->message;
+		}
 	}
 
 	/**
