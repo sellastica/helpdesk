@@ -160,7 +160,7 @@ class Message extends \Sellastica\Entity\Entity\AbstractEntity implements \Sella
 		// The Regular Expression filter
 		$regexp = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
 
-		if (strpos($this->message, '<a ')) {
+		if (strpos($this->message, '<a ') || strpos($this->message, '<img')) {
 			return $this->message;
 		} elseif (preg_match($regexp, $this->message, $url)) {
 			return preg_replace($regexp, "<a href=\"{$url[0]}\">{$url[0]}</a>", $this->message);
