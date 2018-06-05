@@ -69,7 +69,8 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 		$noReplyEmail = $this->container->parameters['helpdesk']['noreply_email'];
 		$noReplyName = $this->translator->translate('core.helpdesk.helpdesk_name');
 		$fallbackEmail = $this->container->parameters['helpdesk']['fallback_email'];
-		$subject = $ticket->getNumber() . ': ' . \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
+		$subject = $ticket->getNumber() . ' [' . $ticket->getProject()->getHost() . ']: '
+			. \Sellastica\Utils\Strings::firstUpper($ticket->getSubject());
 		/** @var \Sellastica\Project\Entity\Project $crmProject */
 		$crmProject = $this->em->getRepository(\Sellastica\Project\Entity\Project::class)->find(
 			$this->container->parameters['crm']['project_id']

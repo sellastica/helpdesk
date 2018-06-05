@@ -3,11 +3,13 @@
 {layout '../@layout_email.latte'}
 
 {block content}
-	<blockquote class="margin-top-0">
+	<p>Byl vytvořen nový tiket <strong>{$ticket->getNumber()}</strong> od
+		<strong>{$ticket->getProject()->getHost()}</strong>.</p>
+	<p>Odpovědět můžete zde: <a href="{$ticket_url}">{$ticket_url}</a></p>
+
+	<blockquote>
 		{$message->getMessage()|noescape}
 	</blockquote>
-
-	<p>Odpovědět můžete zde: <a href="{$ticket_url}">{$ticket_url}</a></p>
 
 	{include 'footer.latte'}
 {/block}
