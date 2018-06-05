@@ -104,6 +104,7 @@ class TicketService
 		}
 
 		$this->em->persist($message);
+		$this->em->flush(); //retrieve message ID
 
 		if ($request->getAttachments()) {
 			$this->em->flush(); //retrieve message ID
@@ -145,7 +146,10 @@ class TicketService
 			'email' => $email->getEmail(),
 		])) {
 			//new contact
-			$contact = \Sellastica\Project\Entity\ProjectContactBuilder::create($projectId, $firstName, $lastName, $email)->build();
+			$contact = \Sellastica\Project\Entity\ProjectContactBuilder::create(
+				$projectId,
+				new \Sellastica\Identity\Model\Contact($firstName, $lastName, $email)
+			)->build();
 			$this->em->persist($contact);
 		}
 
