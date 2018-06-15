@@ -11,5 +11,5 @@ use Sellastica\Helpdesk\Entity\Ticket;
  */
 class TicketRepositoryProxy extends RepositoryProxy implements ITicketRepository
 {
-	use \Sellastica\DataGrid\Mapping\TFilterRulesRepositoryProxy;
+	use \Sellastica\DataGrid\Mapping\Dibi\TFilterRulesRepositoryProxy;
 }

@@ -13,7 +13,7 @@ use Sellastica\Helpdesk\Entity\TicketCollection;
  */
 class TicketDao extends Dao
 {
-	use \Sellastica\DataGrid\Mapping\TFilterRulesDao;
+	use \Sellastica\DataGrid\Mapping\Dibi\TFilterRulesDao;
 
 
 	/**
