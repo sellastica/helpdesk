@@ -4,7 +4,7 @@
 
 {block content}
 	<p>Nová odpověď od <strong>{$ticket->getContact()->getContact()->getFullName()}</strong> k ticketu
-		<strong>{$ticket->getNumber()}</strong>.</p>
+		<strong>{$ticket->getTitle()}</strong>.</p>
 
 	<blockquote>
 		{$message->getMessage()|noescape}

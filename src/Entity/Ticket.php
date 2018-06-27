@@ -128,6 +128,14 @@ class Ticket extends \Sellastica\Entity\Entity\AbstractEntity implements \Sellas
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getTitle(): string
+	{
+		return $this->getNumber() . ': ' . \Nette\Utils\Strings::firstUpper($this->subject);
+	}
+
+	/**
 	 * @return int|null
 	 */
 	public function getStaffId(): ?int
