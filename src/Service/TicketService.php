@@ -28,6 +28,15 @@ class TicketService
 	}
 
 	/**
+	 * @param $id
+	 * @return null|\Sellastica\Helpdesk\Entity\Ticket
+	 */
+	public function find($id): ?\Sellastica\Helpdesk\Entity\Ticket
+	{
+		return $this->em->getRepository(\Sellastica\Helpdesk\Entity\Ticket::class)->find($id);
+	}
+
+	/**
 	 * @param \Sellastica\Helpdesk\Service\CreateTicketRequest $request
 	 * @return \Sellastica\Helpdesk\Entity\Ticket
 	 */
