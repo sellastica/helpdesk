@@ -17,27 +17,29 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 	private $logger;
 	/** @var \Nette\Bridges\ApplicationLatte\ILatteFactory */
 	private $latteFactory;
+	/** @var \Sellastica\Integroid\Model\MasterProjectFactory */
+	private $masterProjectFactory;
 
 
 	/**
 	 * @param array $mailerOptions
 	 * @param \Sellastica\Entity\EntityManager $em
 	 * @param \Sellastica\Project\Model\ProjectAccessor $projectAccessor
-	 * @param \Nette\Mail\IMailer $mailer
 	 * @param \Nette\Localization\ITranslator $translator
 	 * @param \Nette\DI\Container $container
 	 * @param \Sellastica\Monolog\Logger $logger
 	 * @param \Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
+	 * @param \Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory
 	 */
 	public function __construct(
 		array $mailerOptions,
 		\Sellastica\Entity\EntityManager $em,
 		\Sellastica\Project\Model\ProjectAccessor $projectAccessor,
-		\Nette\Mail\IMailer $mailer,
 		\Nette\Localization\ITranslator $translator,
 		\Nette\DI\Container $container,
 		\Sellastica\Monolog\Logger $logger,
-		\Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
+		\Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory,
+		\Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory
 	)
 	{
 		$this->em = $em;
@@ -47,6 +49,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 		$this->latteFactory = $latteFactory;
 		$this->logger = $logger->channel('helpdesk');
 		$this->mailer = new \Sellastica\SmtpMailer\SmtpMailer($mailerOptions);
+		$this->masterProjectFactory = $masterProjectFactory;
 	}
 
 	/**
@@ -64,6 +67,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 	 */
 	public function execute(TicketEvent $event): void
 	{
+		$masterProject = $this->masterProjectFactory->create();
 		$ticket = $event->getTicket();
 		$sender = $event->getSender();
 		$noReplyEmail = $this->container->parameters['helpdesk']['noreply_email'];
@@ -126,7 +130,7 @@ class CreateTicketListener implements \Contributte\EventDispatcher\EventSubscrib
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/ticket_created_from_support.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl($ticket->getProject()->getDefaultUrl()->getHostUrl()),
+					'ticket_url' => $ticket->getTicketUrl($masterProject->getDefaultUrl()->getHostUrl()),
 				])
 			);
 			$this->send($message);
