@@ -17,6 +17,8 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	private $logger;
 	/** @var \Nette\Bridges\ApplicationLatte\ILatteFactory */
 	private $latteFactory;
+	/** @var \Sellastica\Integroid\Model\MasterProjectFactory */
+	private $masterProjectFactory;
 
 
 	/**
@@ -27,6 +29,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	 * @param \Nette\DI\Container $container
 	 * @param \Sellastica\Monolog\Logger $logger
 	 * @param \Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
+	 * @param \Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory
 	 */
 	public function __construct(
 		array $mailerOptions,
@@ -35,7 +38,8 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 		\Nette\Localization\ITranslator $translator,
 		\Nette\DI\Container $container,
 		\Sellastica\Monolog\Logger $logger,
-		\Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
+		\Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory,
+		\Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory
 	)
 	{
 		$this->em = $em;
@@ -45,6 +49,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 		$this->latteFactory = $latteFactory;
 		$this->logger = $logger->channel('helpdesk');
 		$this->mailer = new \Sellastica\SmtpMailer\SmtpMailer($mailerOptions);
+		$this->masterProjectFactory = $masterProjectFactory;
 	}
 
 	/**
@@ -62,6 +67,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	 */
 	public function execute(MessageEvent $event): void
 	{
+		$masterProject = $this->masterProjectFactory->create();
 		$ticket = $event->getMessage()->getTicket();
 		$sender = $event->getSender();
 		$noReplyEmail = $this->container->parameters['helpdesk']['noreply_email'];
@@ -125,7 +131,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/message_received_from_support.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl($crmProject->getDefaultUrl()->getAbsoluteUrl()),
+					'ticket_url' => $ticket->getTicketUrl($masterProject->getDefaultUrl()->getAbsoluteUrl()),
 				])
 			);
 		}
