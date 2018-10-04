@@ -37,6 +37,28 @@ class TicketService
 	}
 
 	/**
+	 * @param array $filter
+	 * @param \Sellastica\Entity\Configuration|null $configuration
+	 * @return \Sellastica\Helpdesk\Entity\TicketCollection|\Sellastica\Helpdesk\Entity\Ticket[]
+	 */
+	public function findBy(
+		array $filter,
+		\Sellastica\Entity\Configuration $configuration = null
+	): \Sellastica\Helpdesk\Entity\TicketCollection
+	{
+		return $this->em->getRepository(\Sellastica\Helpdesk\Entity\Ticket::class)->findBy($filter, $configuration);
+	}
+
+	/**
+	 * @param array $filter
+	 * @return int
+	 */
+	public function findCountBy(array $filter): int
+	{
+		return $this->em->getRepository(\Sellastica\Helpdesk\Entity\Ticket::class)->findCountBy($filter);
+	}
+
+	/**
 	 * @param \Sellastica\Helpdesk\Service\CreateTicketRequest $request
 	 * @return \Sellastica\Helpdesk\Entity\Ticket
 	 */
