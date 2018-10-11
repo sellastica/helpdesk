@@ -19,6 +19,8 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	private $latteFactory;
 	/** @var \Sellastica\Integroid\Model\MasterProjectFactory */
 	private $masterProjectFactory;
+	/** @var \Sellastica\Core\Model\Environment */
+	private $environment;
 
 
 	/**
@@ -30,6 +32,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 	 * @param \Sellastica\Monolog\Logger $logger
 	 * @param \Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory
 	 * @param \Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory
+	 * @param \Sellastica\Core\Model\Environment $environment
 	 */
 	public function __construct(
 		array $mailerOptions,
@@ -39,7 +42,8 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 		\Nette\DI\Container $container,
 		\Sellastica\Monolog\Logger $logger,
 		\Nette\Bridges\ApplicationLatte\ILatteFactory $latteFactory,
-		\Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory
+		\Sellastica\Integroid\Model\MasterProjectFactory $masterProjectFactory,
+		\Sellastica\Core\Model\Environment $environment
 	)
 	{
 		$this->em = $em;
@@ -50,6 +54,7 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 		$this->logger = $logger->channel('helpdesk');
 		$this->mailer = new \Sellastica\SmtpMailer\SmtpMailer($mailerOptions);
 		$this->masterProjectFactory = $masterProjectFactory;
+		$this->environment = $environment;
 	}
 
 	/**
@@ -131,7 +136,11 @@ class CreateMessageListener implements \Contributte\EventDispatcher\EventSubscri
 				$latte->renderToString(__DIR__ . '/../UI/Emails/contact/message_received_from_support.latte', [
 					'message' => $event->getMessage(),
 					'ticket' => $ticket,
-					'ticket_url' => $ticket->getTicketUrl($masterProject->getDefaultUrl()->getAbsoluteUrl()),
+					'ticket_url' => $ticket->getTicketUrl(
+						$this->environment->isSellastica()
+							? $ticket->getProject()->getDefaultUrl()->getAbsoluteUrl()
+							: $masterProject->getDefaultUrl()->getAbsoluteUrl()
+					),
 				])
 			);
 		}
